@@ -17,6 +17,10 @@ void *UTF8ToASCII(void *);
 
 void *UTF8Lower(void *);
 
+void *UTF8Higher(void *);
+
+int UTF8IsValid(void *);
+
 typeMetadata *CreateUTF8Meta(int size);
 
 #endif //LABA1_UTF8_STRING_H

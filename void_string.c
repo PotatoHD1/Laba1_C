@@ -17,7 +17,8 @@ voidString *CreateString(stringMetadata *stringMeta, int len) {
 }
 
 typeMetadata *CreateTypeMeta(int size, int (*IsEqual)(void *, void *), void *(*ToUTF8)(void *),
-                             void *(*ToUTF16)(void *), void *(*ToASCII)(void *), void *(*Lower)(void *)) {
+                             void *(*ToUTF16)(void *), void *(*ToASCII)(void *), void *(*Lower)(void *),
+                             void *(*Higher)(void *)) {
     typeMetadata *res = (typeMetadata *) calloc(1, sizeof(typeMetadata));
     res->size = size;
     res->IsEqual = IsEqual;
@@ -25,6 +26,7 @@ typeMetadata *CreateTypeMeta(int size, int (*IsEqual)(void *, void *), void *(*T
     res->ToUTF16 = ToUTF16;
     res->ToASCII = ToASCII;
     res->Lower = Lower;
+    res->Higher = Higher;
 
     return res;
 }
@@ -105,7 +107,9 @@ voidString *Recode(void *(*func)(void *), voidString *voidStr) {
     assert(func != NULL && validStr(voidStr));
     voidString *res = CreateString(voidStr->stringMeta, voidStr->len);
     for (int i = 0; i < voidStr->len; ++i) {
-        memcpy(GetI(res, i), func(GetI(voidStr, i)), voidStr->stringMeta->typeMeta->size);
+        void *tmp = func(GetI(voidStr, i));
+        assert(tmp != NULL);
+        memcpy(GetI(res, i), tmp, voidStr->stringMeta->typeMeta->size);
     }
     return res;
 }

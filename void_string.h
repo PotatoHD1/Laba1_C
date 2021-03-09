@@ -20,6 +20,8 @@ struct typeMetadata {
     void *(*ToASCII)(void *);
 
     void *(*Lower)(void *);
+
+    void *(*Higher)(void *);
 };
 
 struct stringMetadata {
@@ -74,5 +76,7 @@ int validStr(voidString *);
 
 int equalStrMeta(voidString *, voidString *);
 
+typeMetadata *CreateTypeMeta(int, int (*)(void *, void *), void *(*)(void *), void *(*)(void *), void *(*)(void *),
+                             void *(*)(void *), void *(*)(void *));
 
 #endif //LABA1_VOID_STRING_H
