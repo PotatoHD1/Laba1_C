@@ -3,3 +3,7 @@
 //
 
 #include "utf8_string.h"
+
+typeMetadata *CreateUTF8Meta(int size) {
+
+};

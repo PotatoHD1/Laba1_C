@@ -1,6 +1,5 @@
 file(REMOVE_RECURSE
   "CMakeFiles/laba1.dir/main.c.obj"
-  "CMakeFiles/laba1.dir/void_string.c.obj"
   "laba1.exe"
   "laba1.exe.manifest"
   "laba1.lib"

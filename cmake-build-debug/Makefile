@@ -154,33 +154,6 @@ main.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\laba1.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\laba1.dir\main.c.s
 .PHONY : main.c.s
 
-void_string.obj: void_string.c.obj
-
-.PHONY : void_string.obj
-
-# target to build an object file
-void_string.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\laba1.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\laba1.dir\void_string.c.obj
-.PHONY : void_string.c.obj
-
-void_string.i: void_string.c.i
-
-.PHONY : void_string.i
-
-# target to preprocess a source file
-void_string.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\laba1.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\laba1.dir\void_string.c.i
-.PHONY : void_string.c.i
-
-void_string.s: void_string.c.s
-
-.PHONY : void_string.s
-
-# target to generate assembly for a file
-void_string.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\laba1.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\laba1.dir\void_string.c.s
-.PHONY : void_string.c.s
-
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -193,9 +166,6 @@ help:
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
-	@echo ... void_string.obj
-	@echo ... void_string.i
-	@echo ... void_string.s
 .PHONY : help
 
 

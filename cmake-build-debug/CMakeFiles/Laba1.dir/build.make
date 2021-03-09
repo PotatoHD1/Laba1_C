@@ -80,38 +80,17 @@ CMakeFiles\laba1.dir\main.c.s: cmake_force
  /nologo $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) /FoNUL /FAs /FaCMakeFiles\laba1.dir\main.c.s /c C:\Users\korna\CLionProjects\Laba1\main.c
 <<
 
-CMakeFiles\laba1.dir\void_string.c.obj: CMakeFiles\laba1.dir\flags.make
-CMakeFiles\laba1.dir\void_string.c.obj: ..\void_string.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\korna\CLionProjects\Laba1\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/laba1.dir/void_string.c.obj"
-	C:\PROGRA~2\MICROS~2\2019\COMMUN~1\VC\Tools\MSVC\1427~1.291\bin\Hostx86\x86\cl.exe @<<
- /nologo $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) /FoCMakeFiles\laba1.dir\void_string.c.obj /FdCMakeFiles\laba1.dir\ /FS -c C:\Users\korna\CLionProjects\Laba1\void_string.c
-<<
-
-CMakeFiles\laba1.dir\void_string.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/laba1.dir/void_string.c.i"
-	C:\PROGRA~2\MICROS~2\2019\COMMUN~1\VC\Tools\MSVC\1427~1.291\bin\Hostx86\x86\cl.exe > CMakeFiles\laba1.dir\void_string.c.i @<<
- /nologo $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\korna\CLionProjects\Laba1\void_string.c
-<<
-
-CMakeFiles\laba1.dir\void_string.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/laba1.dir/void_string.c.s"
-	C:\PROGRA~2\MICROS~2\2019\COMMUN~1\VC\Tools\MSVC\1427~1.291\bin\Hostx86\x86\cl.exe @<<
- /nologo $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) /FoNUL /FAs /FaCMakeFiles\laba1.dir\void_string.c.s /c C:\Users\korna\CLionProjects\Laba1\void_string.c
-<<
-
 # Object files for target laba1
 laba1_OBJECTS = \
-"CMakeFiles\laba1.dir\main.c.obj" \
-"CMakeFiles\laba1.dir\void_string.c.obj"
+"CMakeFiles\laba1.dir\main.c.obj"
 
 # External object files for target laba1
 laba1_EXTERNAL_OBJECTS =
 
 laba1.exe: CMakeFiles\laba1.dir\main.c.obj
-laba1.exe: CMakeFiles\laba1.dir\void_string.c.obj
 laba1.exe: CMakeFiles\laba1.dir\build.make
 laba1.exe: CMakeFiles\laba1.dir\objects1.rsp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\korna\CLionProjects\Laba1\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable laba1.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\korna\CLionProjects\Laba1\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable laba1.exe"
 	C:\Users\korna\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\203.7148.70\bin\cmake\win\bin\cmake.exe -E vs_link_exe --intdir=CMakeFiles\laba1.dir --rc="E:\Windows Kits\10\bin\10.0.18362.0\x86\rc.exe" --mt="E:\Windows Kits\10\bin\10.0.18362.0\x86\mt.exe" --manifests  -- C:\PROGRA~2\MICROS~2\2019\COMMUN~1\VC\Tools\MSVC\1427~1.291\bin\Hostx86\x86\link.exe /nologo @CMakeFiles\laba1.dir\objects1.rsp @<<
  /out:laba1.exe /implib:laba1.lib /pdb:C:\Users\korna\CLionProjects\Laba1\cmake-build-debug\laba1.pdb /version:0.0  /machine:X86 /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib 
 <<

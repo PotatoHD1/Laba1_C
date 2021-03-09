@@ -5,6 +5,3 @@ CMakeFiles\Laba1.dir\main.c.obj: ..\main.c
 CMakeFiles\Laba1.dir\main.c.obj: ..\void_string.c
 CMakeFiles\Laba1.dir\main.c.obj: ..\void_string.h
 
-CMakeFiles\Laba1.dir\void_string.c.obj: ..\void_string.c
-CMakeFiles\Laba1.dir\void_string.c.obj: ..\void_string.h
-

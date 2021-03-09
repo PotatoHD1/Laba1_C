@@ -13,6 +13,12 @@ struct typeMetadata {
 
     int (*IsEqual)(void *, void *);
 
+    void *(*ToUTF8)(void *);
+
+    void *(*ToUTF16)(void *);
+
+    void *(*ToASCII)(void *);
+
     void *(*Lower)(void *);
 };
 
@@ -46,13 +52,11 @@ voidString *Concat(voidString *, voidString *);
 
 voidString *Substring(int, int, voidString *);
 
-void *Delete(voidString *);
+void Delete(voidString *);
 
 void *GetI(voidString *, int);
 
 voidString *CreateString(stringMetadata *, int);
-
-int equalStrMeta(stringMetadata *, stringMetadata *);
 
 int equalTypeMeta(typeMetadata *, typeMetadata *);
 
@@ -61,5 +65,14 @@ voidString *Recode(void *(*)(void *), voidString *);
 void *StrStr(voidString *, voidString *, int);
 
 int Contains(voidString *, voidString *, int, int);
+
+int validStrMeta(stringMetadata *);
+
+int validTypeMeta(typeMetadata *);
+
+int validStr(voidString *);
+
+int equalStrMeta(voidString *, voidString *);
+
 
 #endif //LABA1_VOID_STRING_H

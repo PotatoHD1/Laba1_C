@@ -87,12 +87,6 @@
 		<Unit filename="C:/Users/korna/CLionProjects/Laba1/main.c">
 			<Option target="laba1"/>
 		</Unit>
-		<Unit filename="C:/Users/korna/CLionProjects/Laba1/void_string.c">
-			<Option target="laba1"/>
-		</Unit>
-		<Unit filename="C:/Users/korna/CLionProjects/Laba1/void_string.h">
-			<Option target="laba1"/>
-		</Unit>
 		<Unit filename="C:/Users/korna/CLionProjects/Laba1/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
