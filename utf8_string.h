@@ -5,17 +5,17 @@
 #ifndef LABA1_UTF8_STRING_H
 #define LABA1_UTF8_STRING_H
 
-#include "void_string.с"
+#include "void_string.h"
 
-int IsEqual(void *, void *);
+int UTF8IsEqual(void *, void *);
 
-void *ToUTF8(void *);
+void *UTF8ToUTF8(void *);
 
-void *ToUTF16(void *);
+void *UTF8ToUTF16(void *);
 
-void *ToASCII(void *);
+void *UTF8ToASCII(void *);
 
-void *Lower(void *);
+void *UTF8Lower(void *);
 
 typeMetadata *CreateUTF8Meta(int size);
 
