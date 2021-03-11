@@ -11,7 +11,7 @@ int ASCIIIsEqual(void *, void *);
 
 void *ASCIIToUTF8(void *);
 
-void *ASCIIToUTF16(void *);
+void *ASCIIToUNICODE(void *);
 
 void *ASCIIToASCII(void *);
 

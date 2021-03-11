@@ -11,7 +11,7 @@ int UTF8IsEqual(void *, void *);
 
 void *UTF8ToUTF8(void *);
 
-void *UTF8ToUTF16(void *);
+void *UTF8ToUNICODE(void *);
 
 void *UTF8ToASCII(void *);
 

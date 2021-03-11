@@ -16,6 +16,17 @@ voidString *CreateString(stringMetadata *stringMeta, int len) {
     return res;
 }
 
+voidString *CreateStringFromCharArr(stringMetadata *stringMeta, int len, char *arr) {
+    assert(len > 0);
+    assert(validStrMeta(stringMeta));
+    voidString *res = (voidString *) calloc(1, sizeof(voidString));
+    res->data = calloc(len, stringMeta->typeMeta->size);
+    memcpy(res->data, arr, len * stringMeta->typeMeta->size);
+    res->len = len;
+    res->stringMeta = stringMeta;
+    return res;
+}
+
 typeMetadata *CreateTypeMeta(int size, int (*IsEqual)(void *, void *), void *(*ToUTF8)(void *),
                              void *(*ToUTF16)(void *), void *(*ToASCII)(void *), void *(*Lower)(void *),
                              void *(*Higher)(void *)) {
@@ -41,9 +52,10 @@ stringMetadata *CreateStringMeta(typeMetadata *typeMetadata) {
     res->Concat = Concat;
     res->Contains = Contains;
     res->CreateString = CreateString;
+    res->CreateStringFromCharArr = CreateStringFromCharArr;
     res->Delete = Delete;
     return res;
-};
+}
 
 int equalTypeMeta(typeMetadata *typeMetadata1, typeMetadata *typeMetadata2) {
     assert(validTypeMeta(typeMetadata1) && validTypeMeta(typeMetadata2));
@@ -70,7 +82,7 @@ int validStrMeta(stringMetadata *stringMeta) {
     assert(stringMeta->Delete != NULL);
     assert(validTypeMeta(stringMeta->typeMeta));
     return 1;
-};
+}
 
 int validStr(voidString *voidStr) {
     assert(voidStr != NULL);
@@ -103,13 +115,14 @@ voidString *Concat(voidString *voidStr1, voidString *voidStr2) {
     return res;
 }
 
-voidString *Recode(void *(*func)(void *), voidString *voidStr) {
+voidString *Recode(void *(*func)(void *), voidString *voidStr, stringMetadata *newStringMeta) {
     assert(func != NULL && validStr(voidStr));
-    voidString *res = CreateString(voidStr->stringMeta, voidStr->len);
+    voidString *res = CreateString(newStringMeta, voidStr->len);
     for (int i = 0; i < voidStr->len; ++i) {
         void *tmp = func(GetI(voidStr, i));
         assert(tmp != NULL);
         memcpy(GetI(res, i), tmp, voidStr->stringMeta->typeMeta->size);
+        free(tmp);
     }
     return res;
 }
@@ -130,8 +143,8 @@ void *StrStr(voidString *voidStr1, voidString *voidStr2, int lower) {
     assert(equalStrMeta(voidStr1, voidStr2));
     assert(lower == 0 || lower == 1);
     if (lower) {
-        voidStr1 = voidStr1->stringMeta->Recode(voidStr1->stringMeta->typeMeta->Lower, voidStr1);
-        voidStr2 = voidStr2->stringMeta->Recode(voidStr2->stringMeta->typeMeta->Lower, voidStr2);
+        voidStr1 = voidStr1->stringMeta->Recode(voidStr1->stringMeta->typeMeta->Lower, voidStr1, voidStr1->stringMeta);
+        voidStr2 = voidStr2->stringMeta->Recode(voidStr2->stringMeta->typeMeta->Lower, voidStr2, voidStr2->stringMeta);
     }
     int start = 0;
     while (start <= voidStr1->len) {

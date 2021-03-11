@@ -7,7 +7,7 @@
 #include <assert.h>
 
 typeMetadata *CreateASCIIMeta(int size) {
-    return CreateTypeMeta(size, ASCIIIsEqual, ASCIIToUTF8, ASCIIToUTF16, ASCIIToASCII, ASCIILower, ASCIIHigher);
+    return CreateTypeMeta(size, ASCIIIsEqual, ASCIIToUTF8, ASCIIToUNICODE, ASCIIToASCII, ASCIILower, ASCIIHigher);
 }
 
 int ASCIIIsValid(void *character) {
@@ -22,7 +22,7 @@ int ASCIIIsEqual(void *character1, void *character2) {
 
 void *ASCIIToUTF8(void *character) {
     assert(ASCIIIsValid(character));
-    char *res;
+    unsigned char *res;
     if (*(unsigned char *) character < 128) {
         res = calloc(1, 1);
         *(res) = *(unsigned char *) character;
@@ -34,11 +34,11 @@ void *ASCIIToUTF8(void *character) {
     return res;
 }
 
-void *ASCIIToUnicode(void *character) {
+void *ASCIIToUNICODE(void *character) {
     assert(ASCIIIsValid(character));
     char *res;
     res = calloc(1, 1);
-    *(res) = *(unsigned char *) character;
+    *(res) = *(char *) character;
     return res;
 }
 

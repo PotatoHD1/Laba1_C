@@ -6,11 +6,23 @@
 
 #IncludeRegexTransform: 
 
+C:/Users/korna/CLionProjects/Laba1/ascii_string.c
+void_string.c
+C:/Users/korna/CLionProjects/Laba1/void_string.c
+ascii_string.h
+C:/Users/korna/CLionProjects/Laba1/ascii_string.h
+assert.h
+-
+
+C:/Users/korna/CLionProjects/Laba1/ascii_string.h
+void_string.h
+C:/Users/korna/CLionProjects/Laba1/void_string.h
+
 C:/Users/korna/CLionProjects/Laba1/main.c
 stdio.h
 -
-void_string.c
-C:/Users/korna/CLionProjects/Laba1/void_string.c
+ascii_string.c
+C:/Users/korna/CLionProjects/Laba1/ascii_string.c
 
 C:/Users/korna/CLionProjects/Laba1/void_string.c
 stdlib.h

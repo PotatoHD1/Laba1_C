@@ -33,15 +33,18 @@ struct stringMetadata {
 
     void *(*StrStr)(voidString *, voidString *, int);
 
-    voidString *(*Recode)(void *(*)(void *), voidString *);
+    voidString *(*Recode)(void *(*)(void *), voidString *, stringMetadata *);
 
     voidString *(*CreateString)(stringMetadata *, int);
+
+    voidString *(*CreateStringFromCharArr)(stringMetadata *, int, char *);
 
     void *(*GetI)(voidString *, int);
 
     void (*Delete)(voidString *);
 
     int (*Contains)(voidString *, voidString *, int, int);
+
 };
 
 struct voidString {
@@ -62,7 +65,7 @@ voidString *CreateString(stringMetadata *, int);
 
 int equalTypeMeta(typeMetadata *, typeMetadata *);
 
-voidString *Recode(void *(*)(void *), voidString *);
+voidString *Recode(void *(*)(void *), voidString *, stringMetadata *);
 
 void *StrStr(voidString *, voidString *, int);
 
@@ -78,5 +81,7 @@ int equalStrMeta(voidString *, voidString *);
 
 typeMetadata *CreateTypeMeta(int, int (*)(void *, void *), void *(*)(void *), void *(*)(void *), void *(*)(void *),
                              void *(*)(void *), void *(*)(void *));
+
+voidString *CreateStringFromCharArr(stringMetadata *, int, char *);
 
 #endif //LABA1_VOID_STRING_H
