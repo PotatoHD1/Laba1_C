@@ -12,11 +12,22 @@ typeMetadata *CreateUNICODEMeta(int size) {
 }
 
 int UNICODEIsEqual(void *character1, void *character2) {
-
+    assert(UNICODEIsValid(character1) && UNICODEIsValid(character2));
+    return *(unsigned char *) character1 == *(unsigned char *) character2;
 }
 
 void *UNICODEToUTF8(void *character) {
-
+    assert(UNICODEIsValid(character));
+    unsigned char *res;
+    if (*(unsigned char *) character < 128) {
+        res = calloc(1, 1);
+        *(res) = *(unsigned char *) character;
+    } else {
+        res = calloc(1, 2);
+        *(res) = 0xC0 | (*(unsigned char *) character >> 6);
+        *(res + 1) = 0x80 | (*(unsigned char *) character & 0x3f);
+    }
+    return res;
 }
 
 void *UNICODEToUNICODE(void *character) {

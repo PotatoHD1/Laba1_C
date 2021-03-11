@@ -16,7 +16,7 @@ voidString *CreateString(stringMetadata *stringMeta, int len) {
     return res;
 }
 
-voidString *CreateStringFromCharArr(stringMetadata *stringMeta, int len, char *arr) {
+voidString *CreateStringFromArr(stringMetadata *stringMeta, int len, void *arr) {
     assert(len > 0);
     assert(validStrMeta(stringMeta));
     voidString *res = (voidString *) calloc(1, sizeof(voidString));
