@@ -21,4 +21,6 @@ int UTF8IsValid(void *);
 
 typeMetadata *CreateUTF8Meta(int size);
 
+int UTF8GetLen(void *);
+
 #endif //LABA1_UTF8_STRING_H

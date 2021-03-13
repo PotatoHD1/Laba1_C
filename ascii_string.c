@@ -2,7 +2,6 @@
 // Created by korna on 09.03.2021.
 //
 
-#include "void_string.c"
 #include "ascii_string.h"
 #include <assert.h>
 

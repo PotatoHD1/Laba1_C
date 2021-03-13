@@ -2,7 +2,6 @@
 // Created by korna on 09.03.2021.
 //
 
-#include "void_string.c"
 #include "unicode_string.h"
 #include <assert.h>
 
@@ -45,9 +44,9 @@ void *UNICODELower(void *character) {
     if (*(char *) character >= 'A' && *(char *) character <= 'Z')
         *res = 'a' - 'A' + *(unsigned char *) character;
     else if (*(unsigned char *) character >= 128 && *(unsigned char *) character <= 143)
-        *res = 160 - 128 + *(unsigned char *) character;
+        *res = 32 + *(unsigned char *) character;
     else if (*(unsigned char *) character >= 144 && *(unsigned char *) character <= 159)
-        *res = 224 - 144 + *(unsigned char *) character;
+        *res = 80 + *(unsigned char *) character;
     else if (*(unsigned char *) character == 240)
         *res = 241;
     else
@@ -60,9 +59,9 @@ void *UNICODEHigher(void *character) {
     if (*(char *) character >= 'a' && *(char *) character <= 'z')
         *res = 'A' - 'a' + *(unsigned char *) character;
     else if (*(unsigned char *) character >= 160 && *(unsigned char *) character <= 175)
-        *res = 128 - 160 + *(unsigned char *) character;
+        *res = *(unsigned char *) character - 32;
     else if (*(unsigned char *) character >= 224 && *(unsigned char *) character <= 239)
-        *res = 144 - 224 + *(unsigned char *) character;
+        *res = *(unsigned char *) character - 80;
     else if (*(unsigned char *) character == 241)
         *res = 240;
     else
