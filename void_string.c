@@ -16,7 +16,7 @@ voidString *CreateString(stringMetadata *stringMeta, int len) {
     return res;
 }
 
-voidString *CreateStringFromArr(stringMetadata *stringMeta, int len, void *arr) {
+voidString *CreateFromCharArray(stringMetadata *stringMeta, int len, char *arr) {
     assert(len > 0);
     assert(validStrMeta(stringMeta));
     voidString *res = (voidString *) calloc(1, sizeof(voidString));
@@ -52,7 +52,7 @@ stringMetadata *CreateStringMeta(typeMetadata *typeMetadata) {
     res->Concat = Concat;
     res->Contains = Contains;
     res->CreateString = CreateString;
-    res->CreateStringFromCharArr = CreateStringFromCharArr;
+    res->CreateStringFromCharArr = CreateFromCharArray;
     res->Delete = Delete;
     return res;
 }

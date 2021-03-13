@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include "void_string.c"
-//#include "ascii_string.c"
-//#include "unicode_string.c"
-//#include "utf8_string.c"
+#include "ascii_string.c"
+#include "unicode_string.c"
+#include "utf8_string.c"
 
 int main() {
 
@@ -18,7 +18,5 @@ int main() {
 
 //    unsigned char a = 240;        Ё
 //    unsigned char a = 241;        ё
-    unsigned char a[2] = "а";
-    printf("%d\n", 'A' - 'a');
     return 0;
 }

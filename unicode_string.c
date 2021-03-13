@@ -10,6 +10,11 @@ typeMetadata *CreateUNICODEMeta(int size) {
                           UNICODEHigher);
 }
 
+int UNICODEIsValid(void *character1) {
+    assert(character1 != NULL);
+    return 1;
+}
+
 int UNICODEIsEqual(void *character1, void *character2) {
     assert(UNICODEIsValid(character1) && UNICODEIsValid(character2));
     return *(unsigned char *) character1 == *(unsigned char *) character2;
