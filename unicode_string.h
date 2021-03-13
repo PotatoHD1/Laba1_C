@@ -5,8 +5,6 @@
 #ifndef LABA1_UNICODE_STRING_H
 #define LABA1_UNICODE_STRING_H
 
-#include "void_string.h"
-
 int UNICODEIsEqual(void *, void *);
 
 void *UNICODEToUTF8(void *);

@@ -1,8 +1,6 @@
 //
 // Created by korna on 09.03.2021.
 //
-
-#include "void_string.c"
 #include "utf8_string.h"
 #include <assert.h>
 
@@ -12,6 +10,8 @@ typeMetadata *CreateUTF8Meta(int size) {
 
 int UTF8IsValid(void *character) {
     assert(character != NULL);
+    assert(((unsigned char *) character)[0] < 128 ||
+           (((unsigned char *) character)[0] >= 128 && ((unsigned char *) character)[0] <= 191));
     return 1;
 }
 
@@ -26,7 +26,10 @@ int UTF8IsEqual(void *character1, void *character2) {
 
 int UTF8GetLen(void *character) {
     int res = 1;
-    while ((*((unsigned char *) character + res) >= 128 && *((unsigned char *) character + res) <= 191) && res < 4) res++;
+    if (*((unsigned char *) character) > 128)
+        while ((*((unsigned char *) character + res) >= 128 && *((unsigned char *) character + res) <= 191) &&
+               res < 4)
+            res++;
     return res;
 }
 

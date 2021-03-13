@@ -5,8 +5,6 @@
 #ifndef LABA1_UTF8_STRING_H
 #define LABA1_UTF8_STRING_H
 
-#include "void_string.h"
-
 int UTF8IsEqual(void *, void *);
 
 void *UTF8ToUTF8(void *);
