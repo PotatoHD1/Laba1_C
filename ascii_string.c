@@ -9,6 +9,10 @@ typeMetadata *CreateASCIIMeta(int size) {
     return CreateTypeMeta(size, ASCIIIsEqual, ASCIIToUTF8, ASCIIToUNICODE, ASCIIToASCII, ASCIILower, ASCIIHigher);
 }
 
+stringMetadata *CreateASCIIStringMeta() {
+    return CreateStringMeta(CreateASCIIMeta(sizeof(char)));
+}
+
 int ASCIIIsValid(void *character) {
     assert(character != NULL);
     return 1;

@@ -10,6 +10,10 @@ typeMetadata *CreateUNICODEMeta(int size) {
                           UNICODEHigher);
 }
 
+stringMetadata *CreateUNICODEStringMeta() {
+    return CreateStringMeta(CreateUNICODEMeta(sizeof(char)));
+}
+
 int UNICODEIsValid(void *character1) {
     assert(character1 != NULL);
     return 1;

@@ -9,6 +9,10 @@ typeMetadata *CreateUTF8Meta(int size) {
     return CreateTypeMeta(size, UTF8IsEqual, UTF8ToUTF8, UTF8ToUNICODE, UTF8ToASCII, UTF8Lower, UTF8Higher);
 }
 
+stringMetadata *CreateUTF8StringMeta() {
+    return CreateStringMeta(CreateUTF8Meta(sizeof(int)));
+}
+
 int UTF8IsValid(void *character) {
     assert(character != NULL);
     assert(((unsigned char *) character)[0] < 128 ||
