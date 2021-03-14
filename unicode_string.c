@@ -7,7 +7,7 @@
 
 typeMetadata *CreateUNICODEMeta(int size) {
     return CreateTypeMeta(size, UNICODEIsEqual, UNICODEToUTF8, UNICODEToUNICODE, UNICODEToASCII, UNICODELower,
-                          UNICODEHigher);
+                          UNICODEHigher, SetUNICODELocale, ScanUNICODE, PrintUNICODE);
 }
 
 stringMetadata *CreateUNICODEStringMeta() {

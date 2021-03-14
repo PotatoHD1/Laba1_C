@@ -6,7 +6,8 @@
 #include <stdint.h>
 
 typeMetadata *CreateUTF8Meta(int size) {
-    return CreateTypeMeta(size, UTF8IsEqual, UTF8ToUTF8, UTF8ToUNICODE, UTF8ToASCII, UTF8Lower, UTF8Higher);
+    return CreateTypeMeta(size, UTF8IsEqual, UTF8ToUTF8, UTF8ToUNICODE, UTF8ToASCII, UTF8Lower, UTF8Higher,
+                          SetUTF8Locale, ScanUTF8, PrintUTF8);
 }
 
 stringMetadata *CreateUTF8StringMeta() {

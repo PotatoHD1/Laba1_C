@@ -15,6 +15,8 @@ assert.h
 C:/Users/korna/CLionProjects/Laba1/ascii_string.h
 
 C:/Users/korna/CLionProjects/Laba1/main.c
+stdlib.h
+-
 stdio.h
 -
 void_string.c
@@ -25,6 +27,8 @@ unicode_string.c
 C:/Users/korna/CLionProjects/Laba1/unicode_string.c
 utf8_string.c
 C:/Users/korna/CLionProjects/Laba1/utf8_string.c
+locale.h
+-
 
 C:/Users/korna/CLionProjects/Laba1/unicode_string.c
 unicode_string.h

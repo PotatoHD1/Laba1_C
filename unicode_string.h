@@ -21,4 +21,10 @@ int UNICODEIsValid(void *);
 
 typeMetadata *CreateUNICODEMeta(int size);
 
+void SetUNICODELocale();
+
+void * ScanUNICODE();
+
+void PrintUNICODE(void *);
+
 #endif //LABA1_UNICODE_STRING_H

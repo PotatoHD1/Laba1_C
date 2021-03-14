@@ -29,7 +29,7 @@ voidString *CreateFromCharArray(stringMetadata *stringMeta, int len, char *arr) 
 
 typeMetadata *CreateTypeMeta(int size, int (*IsEqual)(void *, void *), void *(*ToUTF8)(void *),
                              void *(*ToUTF16)(void *), void *(*ToASCII)(void *), void *(*Lower)(void *),
-                             void *(*Higher)(void *)) {
+                             void *(*Higher)(void *), void(*SetLocale)(), void *(*Scan)(), void (*Print)(void *)) {
     typeMetadata *res = (typeMetadata *) calloc(1, sizeof(typeMetadata));
     res->size = size;
     res->IsEqual = IsEqual;
@@ -38,7 +38,9 @@ typeMetadata *CreateTypeMeta(int size, int (*IsEqual)(void *, void *), void *(*T
     res->ToASCII = ToASCII;
     res->Lower = Lower;
     res->Higher = Higher;
-
+    res->SetLocale = SetLocale;
+    res->Print = Print;
+    res->Scan = Scan;
     return res;
 }
 
@@ -158,6 +160,36 @@ void ToLower(voidString *str) {
 
 void ToHigher(voidString *str) {
     str->stringMeta->Map(str->stringMeta->typeMeta->Higher, str);
+}
+
+void ScanStr(voidString *str) {
+    for (int i = 0; i < str->len; ++i) {
+        void *temp = str->stringMeta->typeMeta->Scan();
+        memcpy(GetI(str, i), temp, str->stringMeta->typeMeta->size);
+        free(temp);
+    }
+}
+
+voidString *CreateFromScanf(stringMetadata *stringMeta, int len) {
+    assert(len > 0);
+    assert(validStrMeta(stringMeta));
+    voidString *res = (voidString *) calloc(1, sizeof(voidString));
+    res->data = calloc(len, stringMeta->typeMeta->size);
+    for (int i = 0; i < len; ++i) {
+        void *temp = stringMeta->typeMeta->Scan();
+        memcpy((char *) res->data + i * stringMeta->typeMeta->size, temp, stringMeta->typeMeta->size);
+        free(temp);
+    }
+    res->len = len;
+    res->stringMeta = stringMeta;
+    return res;
+}
+
+void PrintStr(voidString *str) {
+    for (int i = 0; i < str->len; ++i) {
+        str->stringMeta->typeMeta->Print(GetI(str, i));
+        printf("\n");
+    }
 }
 
 void *StrStr(voidString *voidStr1, voidString *voidStr2, int lower) {

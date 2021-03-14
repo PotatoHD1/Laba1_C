@@ -21,4 +21,10 @@ int ASCIIIsValid(void *);
 
 typeMetadata *CreateASCIIMeta(int size);
 
+void SetASCIILocale();
+
+void * ScanASCII();
+
+void PrintASCII(void *);
+
 #endif //LABA1_ASCII_STRING_H

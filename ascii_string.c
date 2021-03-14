@@ -6,7 +6,8 @@
 #include <assert.h>
 
 typeMetadata *CreateASCIIMeta(int size) {
-    return CreateTypeMeta(size, ASCIIIsEqual, ASCIIToUTF8, ASCIIToUNICODE, ASCIIToASCII, ASCIILower, ASCIIHigher);
+    return CreateTypeMeta(size, ASCIIIsEqual, ASCIIToUTF8, ASCIIToUNICODE, ASCIIToASCII, ASCIILower, ASCIIHigher,
+                          SetASCIILocale, ScanASCII, PrintASCII);
 }
 
 stringMetadata *CreateASCIIStringMeta() {

@@ -11,6 +11,8 @@ typedef struct stringMetadata stringMetadata;
 struct typeMetadata {
     size_t size;
 
+    void (*SetLocale)();
+
     int (*IsEqual)(void *, void *);
 
     void *(*ToUTF8)(void *);
@@ -22,6 +24,10 @@ struct typeMetadata {
     void *(*Lower)(void *);
 
     void *(*Higher)(void *);
+
+    void *(*Scan)();
+
+    void (*Print)(void *);
 };
 
 struct stringMetadata {
@@ -88,7 +94,7 @@ int validStr(voidString *);
 int equalStrMeta(voidString *, voidString *);
 
 typeMetadata *CreateTypeMeta(int, int (*)(void *, void *), void *(*)(void *), void *(*)(void *), void *(*)(void *),
-                             void *(*)(void *), void *(*)(void *));
+                             void *(*)(void *), void *(*)(void *), void(*)(), void *(*)(), void (*)(void *));
 
 void Map(void *(*)(void *), voidString *);
 

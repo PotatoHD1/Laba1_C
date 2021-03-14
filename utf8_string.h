@@ -23,4 +23,10 @@ typeMetadata *CreateUTF8Meta(int size);
 
 int UTF8GetLen(void *);
 
+void SetUTF8Locale();
+
+void * ScanUTF8();
+
+void PrintUTF8(void *);
+
 #endif //LABA1_UTF8_STRING_H
