@@ -19,7 +19,7 @@ void *ScanUTF8() {
   return res;
 }
 
-void PrintUTF8(void *el) { printf("%c", *(char *)el); }
+void PrintUTF8(void *el) { printf("%s", (char *)el); }
 
 int UTF8IsValid(void *character) {
   assert(character != NULL);

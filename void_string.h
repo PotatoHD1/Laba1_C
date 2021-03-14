@@ -8,7 +8,7 @@ typedef struct voidString voidString;
 typedef struct typeMetadata typeMetadata;
 
 struct typeMetadata {
-    size_t size;
+    int size;
 
     void (*SetLocale)();
 
@@ -16,7 +16,7 @@ struct typeMetadata {
 
     void *(*ToUTF8)(void *);
 
-    void *(*ToUTF16)(void *);
+    void *(*ToUNICODE)(void *);
 
     void *(*ToASCII)(void *);
 

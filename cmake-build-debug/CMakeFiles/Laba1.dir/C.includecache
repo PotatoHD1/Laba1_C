@@ -17,6 +17,10 @@ locale.h
 C:/Users/korna/CLionProjects/Laba1/ascii_string.h
 
 C:/Users/korna/CLionProjects/Laba1/main.c
+stdio.h
+-
+stdlib.h
+-
 void_string.c
 C:/Users/korna/CLionProjects/Laba1/void_string.c
 ascii_string.c
@@ -25,14 +29,6 @@ unicode_string.c
 C:/Users/korna/CLionProjects/Laba1/unicode_string.c
 utf8_string.c
 C:/Users/korna/CLionProjects/Laba1/utf8_string.c
-stdio.h
--
-stdlib.h
--
-windows.h
--
-conio.h
--
 
 C:/Users/korna/CLionProjects/Laba1/unicode_string.c
 unicode_string.h
@@ -53,13 +49,13 @@ stdint.h
 C:/Users/korna/CLionProjects/Laba1/utf8_string.h
 
 C:/Users/korna/CLionProjects/Laba1/void_string.c
-stdlib.h
-C:/Users/korna/CLionProjects/Laba1/stdlib.h
 void_string.h
 C:/Users/korna/CLionProjects/Laba1/void_string.h
-string.h
--
+stdlib.h
+C:/Users/korna/CLionProjects/Laba1/stdlib.h
 assert.h
+-
+string.h
 -
 
 C:/Users/korna/CLionProjects/Laba1/void_string.h
