@@ -6,8 +6,11 @@
 
 int main() {
     stringMetadata *ascii = CreateASCIIStringMeta();
+    stringMetadata *utf8 = CreateUTF8StringMeta();
+    stringMetadata *unicode = CreateUNICODEStringMeta();
     char a[] = "qwertyuiop";
     voidString *b = CreateFromCharArray(ascii, strlen(a) + 1, a);
-//    printf("%s\n");
+    b->stringMeta->ToHigher(b);
+    printf("%s\n", (char *) b->data);
     return 0;
 }

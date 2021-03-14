@@ -54,6 +54,9 @@ stringMetadata *CreateStringMeta(typeMetadata *typeMetadata) {
     res->CreateString = CreateString;
     res->CreateStringFromCharArr = CreateFromCharArray;
     res->Delete = Delete;
+    res->Map = Map;
+    res->ToHigher = ToHigher;
+    res->ToLower = ToLower;
     return res;
 }
 
@@ -139,12 +142,30 @@ int Contains(voidString *voidStr1, voidString *voidStr2, int start, int n) {
     return 1;
 }
 
+void Map(void *(*func)(void *), voidString *voidStr) {
+    assert(func != NULL && validStr(voidStr));
+    for (int i = 0; i < voidStr->len; ++i) {
+        void *tmp = func(GetI(voidStr, i));
+        assert(tmp != NULL);
+        memcpy(GetI(voidStr, i), tmp, voidStr->stringMeta->typeMeta->size);
+        free(tmp);
+    }
+}
+
+void ToLower(voidString *str) {
+    str->stringMeta->Map(str->stringMeta->typeMeta->Lower, str);
+}
+
+void ToHigher(voidString *str) {
+    str->stringMeta->Map(str->stringMeta->typeMeta->Higher, str);
+}
+
 void *StrStr(voidString *voidStr1, voidString *voidStr2, int lower) {
     assert(equalStrMeta(voidStr1, voidStr2));
     assert(lower == 0 || lower == 1);
     if (lower) {
-        voidStr1 = voidStr1->stringMeta->Recode(voidStr1->stringMeta->typeMeta->Lower, voidStr1, voidStr1->stringMeta);
-        voidStr2 = voidStr2->stringMeta->Recode(voidStr2->stringMeta->typeMeta->Lower, voidStr2, voidStr2->stringMeta);
+        ToLower(voidStr1);
+        ToLower(voidStr2);
     }
     int start = 0;
     while (start <= voidStr1->len) {

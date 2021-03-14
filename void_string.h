@@ -45,6 +45,12 @@ struct stringMetadata {
 
     int (*Contains)(voidString *, voidString *, int, int);
 
+    void (*Map)(void *(*)(void *), voidString *);
+
+    void (*ToLower)(voidString *);
+
+    void (*ToHigher)(voidString *);
+
 };
 
 struct voidString {
@@ -83,5 +89,11 @@ int equalStrMeta(voidString *, voidString *);
 
 typeMetadata *CreateTypeMeta(int, int (*)(void *, void *), void *(*)(void *), void *(*)(void *), void *(*)(void *),
                              void *(*)(void *), void *(*)(void *));
+
+void Map(void *(*)(void *), voidString *);
+
+void ToLower(voidString *);
+
+void ToHigher(voidString *);
 
 #endif //LABA1_VOID_STRING_H
