@@ -5,28 +5,28 @@
 #ifndef LABA1_UNICODE_STRING_H
 #define LABA1_UNICODE_STRING_H
 
-int UNICODEIsEqual(void *, void *);
+int UNICODEIsEqual(void *, void *, char **);
 
-void *UNICODEToUTF8(void *);
+void *UNICODEToUTF8(void *, char **);
 
-void *UNICODEToUNICODE(void *);
+void *UNICODEToUNICODE(void *, char **);
 
-void *UNICODEToASCII(void *);
+void *UNICODEToASCII(void *, char **);
 
-void *UNICODELower(void *);
+void *UNICODELower(void *, char **);
 
-void *UNICODEHigher(void *);
+void *UNICODEHigher(void *, char **);
 
-int UNICODEIsValid(void *);
+int UNICODEIsValid(void *, char **);
 
-typeMetadata *CreateUNICODEMeta();
+typeMetadata *CreateUNICODEMeta(char **);
 
-void SetUNICODELocale();
+void SetUNICODELocale(char **);
 
-void *ScanUNICODE();
+void *ScanUNICODE(char **);
 
-void PrintUNICODE(void *);
+void PrintUNICODE(void *, char **);
 
-void SetUNICODELocale();
+void SetUNICODELocale(char **);
 
-#endif //LABA1_UNICODE_STRING_H
+#endif // LABA1_UNICODE_STRING_H

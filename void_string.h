@@ -10,23 +10,23 @@ typedef struct typeMetadata typeMetadata;
 struct typeMetadata {
     int size;
 
-    void (*SetLocale)();
+    void (*SetLocale)(char **);
 
-    int (*IsEqual)(void *, void *);
+    int (*IsEqual)(void *, void *, char **);
 
-    void *(*ToUTF8)(void *);
+    void *(*ToUTF8)(void *, char **);
 
-    void *(*ToUNICODE)(void *);
+    void *(*ToUNICODE)(void *, char **);
 
-    void *(*ToASCII)(void *);
+    void *(*ToASCII)(void *, char **);
 
-    void *(*Lower)(void *);
+    void *(*Lower)(void *, char **);
 
-    void *(*Higher)(void *);
+    void *(*Higher)(void *, char **);
 
-    void *(*Scan)();
+    void *(*Scan)(char **);
 
-    void (*Print)(void *);
+    void (*Print)(void *, char **);
 };
 
 struct voidString {
@@ -35,37 +35,44 @@ struct voidString {
     typeMetadata *typeMeta;
 };
 
-voidString *CreateFromCharArray(typeMetadata *, int, char *);
+voidString *CreateFromCharArray(typeMetadata *, int, char *, char **);
 
-voidString *Concat(voidString *, voidString *);
+voidString *Concat(voidString *, voidString *, char **);
 
-voidString *Substring(int, int, voidString *);
+voidString *Substring(int, int, voidString *, char **);
 
-void Delete(voidString *);
+void Delete(voidString *, char **);
 
-void *GetI(voidString *, int);
+void *GetI(voidString *, int, char **);
 
-voidString *CreateString(typeMetadata *, int);
+voidString *CreateString(typeMetadata *, int, char **);
 
-int equalTypeMeta(voidString *, voidString *);
+int equalTypeMeta(voidString *, voidString *, char **);
 
-voidString *Recode(void *(*)(void *), voidString *, typeMetadata *);
+voidString *Recode(void *(*)(void *, char **), voidString *, typeMetadata *, char **);
 
-void *StrStr(voidString *, voidString *, int);
+void *StrStr(voidString *, voidString *, int, char **);
 
-int Contains(voidString *, voidString *, int, int);
+int Contains(voidString *, voidString *, int, int, char **);
 
-int validTypeMeta(typeMetadata *);
+int validTypeMeta(typeMetadata *, char **);
 
-int validStr(voidString *);
+int validStr(voidString *, char **);
 
-typeMetadata *CreateTypeMeta(int, int (*)(void *, void *), void *(*)(void *), void *(*)(void *), void *(*)(void *),
-                             void *(*)(void *), void *(*)(void *), void(*)(), void *(*)(), void (*)(void *));
+typeMetadata *
+CreateTypeMeta(int, int (*)(void *, void *, char **), void *(*)(void *, char **), void *(*)(void *, char **),
+               void *(*)(void *, char **),
+               void *(*)(void *, char **), void *(*)(void *, char **), void(*)(char **), void *(*)(char **),
+               void (*)(void *, char **), char **);
 
-void Map(void *(*)(void *), voidString *);
+void Map(void *(*)(void *, char **), voidString *, char **);
 
-void ToLower(voidString *);
+void ToLower(voidString *, char **);
 
-void ToHigher(voidString *);
+void ToHigher(voidString *, char **);
+
+void AddToLog(char **, char []);
+
+void RemoveFromLog(char **);
 
 #endif //LABA1_VOID_STRING_H

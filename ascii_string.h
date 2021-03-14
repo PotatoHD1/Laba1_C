@@ -5,28 +5,28 @@
 #ifndef LABA1_ASCII_STRING_H
 #define LABA1_ASCII_STRING_H
 
-int ASCIIIsEqual(void *, void *);
+int ASCIIIsEqual(void *, void *, char **);
 
-void *ASCIIToUTF8(void *);
+void *ASCIIToUTF8(void *, char **);
 
-void *ASCIIToUNICODE(void *);
+void *ASCIIToUNICODE(void *, char **);
 
-void *ASCIIToASCII(void *);
+void *ASCIIToASCII(void *, char **);
 
-void *ASCIILower(void *);
+void *ASCIILower(void *, char **);
 
-void *ASCIIHigher(void *);
+void *ASCIIHigher(void *, char **);
 
-int ASCIIIsValid(void *);
+int ASCIIIsValid(void *, char **);
 
-typeMetadata *CreateASCIIMeta();
+typeMetadata *CreateASCIIMeta(char **);
 
-void SetASCIILocale();
+void SetASCIILocale(char **);
 
-void *ScanASCII();
+void *ScanASCII(char **);
 
-void PrintASCII(void *);
+void PrintASCII(void *, char **);
 
-void SetASCIILocale();
+void SetASCIILocale(char **);
 
 #endif //LABA1_ASCII_STRING_H
