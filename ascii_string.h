@@ -19,12 +19,14 @@ void *ASCIIHigher(void *);
 
 int ASCIIIsValid(void *);
 
-typeMetadata *CreateASCIIMeta(int size);
+typeMetadata *CreateASCIIMeta();
 
 void SetASCIILocale();
 
-void * ScanASCII();
+void *ScanASCII();
 
 void PrintASCII(void *);
+
+void SetASCIILocale();
 
 #endif //LABA1_ASCII_STRING_H

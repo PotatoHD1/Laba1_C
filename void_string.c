@@ -6,24 +6,24 @@
 #include <string.h>
 #include <assert.h>
 
-voidString *CreateString(stringMetadata *stringMeta, int len) {
+voidString *CreateString(typeMetadata *typeMeta, int len) {
     assert(len > 0);
-    assert(validStrMeta(stringMeta));
+    assert(validTypeMeta(typeMeta));
     voidString *res = (voidString *) calloc(1, sizeof(voidString));
-    res->data = calloc(len, stringMeta->typeMeta->size);
+    res->data = calloc(len, typeMeta->size);
     res->len = len;
-    res->stringMeta = stringMeta;
+    res->typeMeta = typeMeta;
     return res;
 }
 
-voidString *CreateFromCharArray(stringMetadata *stringMeta, int len, char *arr) {
+voidString *CreateFromCharArray(typeMetadata *typeMeta, int len, char *arr) {
     assert(len > 0);
-    assert(validStrMeta(stringMeta));
+    assert(validTypeMeta(typeMeta));
     voidString *res = (voidString *) calloc(1, sizeof(voidString));
-    res->data = calloc(len, stringMeta->typeMeta->size);
-    memcpy(res->data, arr, len * stringMeta->typeMeta->size);
+    res->data = calloc(len, typeMeta->size);
+    memcpy(res->data, arr, len * typeMeta->size);
     res->len = len;
-    res->stringMeta = stringMeta;
+    res->typeMeta = typeMeta;
     return res;
 }
 
@@ -44,102 +44,93 @@ typeMetadata *CreateTypeMeta(int size, int (*IsEqual)(void *, void *), void *(*T
     return res;
 }
 
-stringMetadata *CreateStringMeta(typeMetadata *typeMetadata) {
-    stringMetadata *res = (stringMetadata *) calloc(1, sizeof(stringMetadata));
-    res->typeMeta = typeMetadata;
-    res->GetI = GetI;
-    res->Recode = Recode;
-    res->StrStr = StrStr;
-    res->Substring = Substring;
-    res->Concat = Concat;
-    res->Contains = Contains;
-    res->CreateString = CreateString;
-    res->CreateStringFromCharArr = CreateFromCharArray;
-    res->Delete = Delete;
-    res->Map = Map;
-    res->ToHigher = ToHigher;
-    res->ToLower = ToLower;
-    return res;
-}
-
-int equalTypeMeta(typeMetadata *typeMetadata1, typeMetadata *typeMetadata2) {
-    assert(validTypeMeta(typeMetadata1) && validTypeMeta(typeMetadata2));
-    return typeMetadata1->size == typeMetadata2->size && typeMetadata1->IsEqual == typeMetadata2->IsEqual;
+//size_t size;
+//
+//void (*SetLocale)();
+//
+//int (*IsEqual)(void *, void *);
+//
+//void *(*ToUTF8)(void *);
+//
+//void *(*ToUTF16)(void *);
+//
+//void *(*ToASCII)(void *);
+//
+//void *(*Lower)(void *);
+//
+//void *(*Higher)(void *);
+//
+//void *(*Scan)();
+//
+//void (*Print)(void *);
+int equalTypeMeta(voidString *voidString1, voidString *voidString2) {
+    assert(validStr(voidString1) && validStr(voidString2));
+    return voidString1->typeMeta->size == voidString2->typeMeta->size &&
+           voidString1->typeMeta->SetLocale == voidString2->typeMeta->SetLocale &&
+           voidString1->typeMeta->IsEqual == voidString2->typeMeta->IsEqual &&
+           voidString1->typeMeta->ToUTF8 == voidString2->typeMeta->ToUTF8 &&
+           voidString1->typeMeta->ToUTF16 == voidString2->typeMeta->ToUTF16 &&
+           voidString1->typeMeta->ToASCII == voidString2->typeMeta->ToASCII &&
+           voidString1->typeMeta->Lower == voidString2->typeMeta->Lower &&
+           voidString1->typeMeta->Higher == voidString2->typeMeta->Higher &&
+           voidString1->typeMeta->Scan == voidString2->typeMeta->Scan &&
+           voidString1->typeMeta->Print == voidString2->typeMeta->Print;
 }
 
 int validTypeMeta(typeMetadata *typeMetadata) {
     assert(typeMetadata != NULL);
     assert(typeMetadata->size > 0);
-    assert(typeMetadata->Lower != NULL);
+    assert(typeMetadata->SetLocale != NULL);
     assert(typeMetadata->IsEqual != NULL);
-    assert(typeMetadata->ToASCII != NULL && typeMetadata->ToUTF16 != NULL && typeMetadata->ToUTF8 != NULL);
+    assert(typeMetadata->ToUTF8 != NULL);
+    assert(typeMetadata->ToUTF16 != NULL);
+    assert(typeMetadata->ToASCII != NULL);
+    assert(typeMetadata->Lower != NULL);
+    assert(typeMetadata->Higher != NULL);
+    assert(typeMetadata->Scan != NULL);
+    assert(typeMetadata->Print != NULL);
     return 1;
 }
 
-int validStrMeta(stringMetadata *stringMeta) {
-    assert(stringMeta != NULL);
-    assert(stringMeta->Recode != NULL);
-    assert(stringMeta->Substring != NULL);
-    assert(stringMeta->StrStr != NULL);
-    assert(stringMeta->Concat != NULL);
-    assert(stringMeta->CreateString != NULL);
-    assert(stringMeta->GetI != NULL);
-    assert(stringMeta->Delete != NULL);
-    assert(validTypeMeta(stringMeta->typeMeta));
-    return 1;
-}
 
 int validStr(voidString *voidStr) {
     assert(voidStr != NULL);
     assert(voidStr->data != NULL);
     assert(voidStr->len > 0);
-    assert(validStrMeta(voidStr->stringMeta));
+    assert(validTypeMeta(voidStr->typeMeta));
     return 1;
-}
-
-int equalStrMeta(voidString *voidStr1, voidString *voidStr2) {
-    assert(validStr(voidStr1) && validStr(voidStr2));
-    if (!equalTypeMeta(voidStr1->stringMeta->typeMeta, voidStr2->stringMeta->typeMeta))
-        return 0;
-    return voidStr1->stringMeta->Recode == voidStr2->stringMeta->Recode &&
-           voidStr1->stringMeta->Substring == voidStr2->stringMeta->Substring &&
-           voidStr1->stringMeta->StrStr == voidStr2->stringMeta->StrStr &&
-           voidStr1->stringMeta->Concat == voidStr2->stringMeta->Concat &&
-           voidStr1->stringMeta->CreateString == voidStr2->stringMeta->CreateString &&
-           voidStr1->stringMeta->GetI == voidStr2->stringMeta->GetI &&
-           voidStr1->stringMeta->Delete == voidStr2->stringMeta->Delete;
 }
 
 
 voidString *Concat(voidString *voidStr1, voidString *voidStr2) {
-    assert(equalStrMeta(voidStr1, voidStr2));
-    voidString *res = CreateString(voidStr1->stringMeta, voidStr1->len + voidStr2->len);
-    memcpy(res->data, voidStr1->data, voidStr1->len * voidStr1->stringMeta->typeMeta->size);
+    assert(equalTypeMeta(voidStr1, voidStr2));
+    voidString *res = CreateString(voidStr1->typeMeta, voidStr1->len + voidStr2->len);
+    memcpy(res->data, voidStr1->data, voidStr1->len * voidStr1->typeMeta->size);
     memcpy(GetI(res, voidStr1->len), voidStr2->data,
-           voidStr2->len * voidStr2->stringMeta->typeMeta->size);
+           voidStr2->len * voidStr2->typeMeta->size);
     return res;
 }
 
-voidString *Recode(void *(*func)(void *), voidString *voidStr, stringMetadata *newStringMeta) {
+voidString *Recode(void *(*func)(void *), voidString *voidStr, typeMetadata *newtypeMeta) {
     assert(func != NULL && validStr(voidStr));
-    voidString *res = CreateString(newStringMeta, voidStr->len);
+    voidString *res = CreateString(newtypeMeta, voidStr->len);
     for (int i = 0; i < voidStr->len; ++i) {
         void *tmp = func(GetI(voidStr, i));
         assert(tmp != NULL);
-        memcpy(GetI(res, i), tmp, voidStr->stringMeta->typeMeta->size);
+        memcpy(GetI(res, i), tmp, voidStr->typeMeta->size);
         free(tmp);
     }
     return res;
 }
 
 int Contains(voidString *voidStr1, voidString *voidStr2, int start, int n) {
-    assert(equalStrMeta(voidStr1, voidStr2));
+    assert(equalTypeMeta(voidStr1, voidStr2));
     assert(start >= 0 && n >= 0);
     if (voidStr2->len > (voidStr1->len - start) || voidStr2->len < n)
         return 0;
 
     for (int i = start; i < start + n; ++i)
-        if (!voidStr1->stringMeta->typeMeta->IsEqual(GetI(voidStr1, i), GetI(voidStr1, i - start)))
+        if (!voidStr1->typeMeta->IsEqual(GetI(voidStr1, i), GetI(voidStr1, i - start)))
             return 0;
     return 1;
 }
@@ -149,51 +140,51 @@ void Map(void *(*func)(void *), voidString *voidStr) {
     for (int i = 0; i < voidStr->len; ++i) {
         void *tmp = func(GetI(voidStr, i));
         assert(tmp != NULL);
-        memcpy(GetI(voidStr, i), tmp, voidStr->stringMeta->typeMeta->size);
+        memcpy(GetI(voidStr, i), tmp, voidStr->typeMeta->size);
         free(tmp);
     }
 }
 
 void ToLower(voidString *str) {
-    str->stringMeta->Map(str->stringMeta->typeMeta->Lower, str);
+    Map(str->typeMeta->Lower, str);
 }
 
 void ToHigher(voidString *str) {
-    str->stringMeta->Map(str->stringMeta->typeMeta->Higher, str);
+    Map(str->typeMeta->Higher, str);
 }
 
 void ScanStr(voidString *str) {
     for (int i = 0; i < str->len; ++i) {
-        void *temp = str->stringMeta->typeMeta->Scan();
-        memcpy(GetI(str, i), temp, str->stringMeta->typeMeta->size);
+        void *temp = str->typeMeta->Scan();
+        memcpy(GetI(str, i), temp, str->typeMeta->size);
         free(temp);
     }
 }
 
-voidString *CreateFromScanf(stringMetadata *stringMeta, int len) {
+voidString *CreateFromScanf(typeMetadata *typeMeta, int len) {
     assert(len > 0);
-    assert(validStrMeta(stringMeta));
+    assert(validTypeMeta(typeMeta));
     voidString *res = (voidString *) calloc(1, sizeof(voidString));
-    res->data = calloc(len, stringMeta->typeMeta->size);
+    res->data = calloc(len, typeMeta->size);
     for (int i = 0; i < len; ++i) {
-        void *temp = stringMeta->typeMeta->Scan();
-        memcpy((char *) res->data + i * stringMeta->typeMeta->size, temp, stringMeta->typeMeta->size);
+        void *temp = typeMeta->Scan();
+        memcpy((char *) res->data + i * typeMeta->size, temp, typeMeta->size);
         free(temp);
     }
     res->len = len;
-    res->stringMeta = stringMeta;
+    res->typeMeta = typeMeta;
     return res;
 }
 
 void PrintStr(voidString *str) {
     for (int i = 0; i < str->len; ++i) {
-        str->stringMeta->typeMeta->Print(GetI(str, i));
+        str->typeMeta->Print(GetI(str, i));
         printf("\n");
     }
 }
 
 void *StrStr(voidString *voidStr1, voidString *voidStr2, int lower) {
-    assert(equalStrMeta(voidStr1, voidStr2));
+    assert(equalTypeMeta(voidStr1, voidStr2));
     assert(lower == 0 || lower == 1);
     if (lower) {
         ToLower(voidStr1);
@@ -212,9 +203,9 @@ void *StrStr(voidString *voidStr1, voidString *voidStr2, int lower) {
 
 voidString *Substring(int a, int b, voidString *voidStr) {
     assert(validStr(voidStr));
-    voidString *res = CreateString(voidStr->stringMeta, b - a + 1);
+    voidString *res = CreateString(voidStr->typeMeta, b - a + 1);
     res->data = memcpy(res->data, GetI(voidStr, a),
-                       b * voidStr->stringMeta->typeMeta->size);
+                       b * voidStr->typeMeta->size);
     return res;
 }
 
@@ -229,5 +220,5 @@ void Delete(voidString *voidStr) {
 void *GetI(voidString *voidStr, int i) {
     assert(validStr(voidStr));
     assert(i >= 0 && i < voidStr->len);
-    return (char *) (voidStr->data) + i * (voidStr->stringMeta->typeMeta->size);
+    return (char *) (voidStr->data) + i * (voidStr->typeMeta->size);
 }

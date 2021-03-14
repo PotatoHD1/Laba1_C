@@ -6,7 +6,6 @@
 #define LABA1_VOID_STRING_H
 typedef struct voidString voidString;
 typedef struct typeMetadata typeMetadata;
-typedef struct stringMetadata stringMetadata;
 
 struct typeMetadata {
     size_t size;
@@ -30,42 +29,13 @@ struct typeMetadata {
     void (*Print)(void *);
 };
 
-struct stringMetadata {
-    typeMetadata *typeMeta;
-
-    voidString *(*Concat)(voidString *, voidString *);
-
-    voidString *(*Substring)(int, int, voidString *);
-
-    void *(*StrStr)(voidString *, voidString *, int);
-
-    voidString *(*Recode)(void *(*)(void *), voidString *, stringMetadata *);
-
-    voidString *(*CreateString)(stringMetadata *, int);
-
-    voidString *(*CreateStringFromCharArr)(stringMetadata *, int, char *);
-
-    void *(*GetI)(voidString *, int);
-
-    void (*Delete)(voidString *);
-
-    int (*Contains)(voidString *, voidString *, int, int);
-
-    void (*Map)(void *(*)(void *), voidString *);
-
-    void (*ToLower)(voidString *);
-
-    void (*ToHigher)(voidString *);
-
-};
-
 struct voidString {
     void *data;
     int len;
-    stringMetadata *stringMeta;
+    typeMetadata *typeMeta;
 };
 
-voidString *CreateFromCharArray(stringMetadata *, int, char *);
+voidString *CreateFromCharArray(typeMetadata *, int, char *);
 
 voidString *Concat(voidString *, voidString *);
 
@@ -75,23 +45,19 @@ void Delete(voidString *);
 
 void *GetI(voidString *, int);
 
-voidString *CreateString(stringMetadata *, int);
+voidString *CreateString(typeMetadata *, int);
 
-int equalTypeMeta(typeMetadata *, typeMetadata *);
+int equalTypeMeta(voidString *, voidString *);
 
-voidString *Recode(void *(*)(void *), voidString *, stringMetadata *);
+voidString *Recode(void *(*)(void *), voidString *, typeMetadata *);
 
 void *StrStr(voidString *, voidString *, int);
 
 int Contains(voidString *, voidString *, int, int);
 
-int validStrMeta(stringMetadata *);
-
 int validTypeMeta(typeMetadata *);
 
 int validStr(voidString *);
-
-int equalStrMeta(voidString *, voidString *);
 
 typeMetadata *CreateTypeMeta(int, int (*)(void *, void *), void *(*)(void *), void *(*)(void *), void *(*)(void *),
                              void *(*)(void *), void *(*)(void *), void(*)(), void *(*)(), void (*)(void *));

@@ -5,13 +5,23 @@
 #include "unicode_string.h"
 #include <assert.h>
 
-typeMetadata *CreateUNICODEMeta(int size) {
-    return CreateTypeMeta(size, UNICODEIsEqual, UNICODEToUTF8, UNICODEToUNICODE, UNICODEToASCII, UNICODELower,
+typeMetadata *CreateUNICODEMeta() {
+    return CreateTypeMeta(sizeof(char), UNICODEIsEqual, UNICODEToUTF8, UNICODEToUNICODE, UNICODEToASCII, UNICODELower,
                           UNICODEHigher, SetUNICODELocale, ScanUNICODE, PrintUNICODE);
 }
 
-stringMetadata *CreateUNICODEStringMeta() {
-    return CreateStringMeta(CreateUNICODEMeta(sizeof(char)));
+void SetUNICODELocale() {
+    setlocale(LC_ALL, "ru-RU.1251");
+}
+
+void *ScanUNICODE() {
+    char *res = calloc(1, sizeof(char));
+    *res = getchar();
+    return res;
+}
+
+void PrintUNICODE(void *el) {
+    printf("%c", *(char *) el);
 }
 
 int UNICODEIsValid(void *character1) {

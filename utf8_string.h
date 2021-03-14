@@ -19,14 +19,16 @@ void *UTF8Higher(void *);
 
 int UTF8IsValid(void *);
 
-typeMetadata *CreateUTF8Meta(int size);
+typeMetadata *CreateUTF8Meta();
 
 int UTF8GetLen(void *);
 
 void SetUTF8Locale();
 
-void * ScanUTF8();
+void *ScanUTF8();
 
 void PrintUTF8(void *);
+
+void SetUTF8Locale();
 
 #endif //LABA1_UTF8_STRING_H
