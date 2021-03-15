@@ -3,7 +3,6 @@
 //
 #include "void_string.h"
 #include "stdlib.h"
-#include <assert.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -252,7 +251,8 @@ voidString *Recode(void *(*func)(void *, char **), voidString *voidStr,
     memcpy(tmp1, tmp, voidStr->typeMeta->size);
     if (IsLogError(errorlog))
       return NULL;
-    free(tmp);
+    if (tmp != GetI(voidStr, i, errorlog))
+      free(tmp);
   }
   RemoveFromLog(errorlog);
   return res;
@@ -278,15 +278,16 @@ bool Contains(voidString *voidStr1, voidString *voidStr2, int start, int n,
     return false;
   }
 
-  for (int i = start; i < start + n; ++i)
+  for (int i = start; i < start + n; ++i) {
     if (!voidStr1->typeMeta->IsEqual(GetI(voidStr1, i, errorlog),
-                                     GetI(voidStr1, i - start, errorlog),
+                                     GetI(voidStr2, i - start, errorlog),
                                      errorlog)) {
       if (IsLogError(errorlog))
         return NULL;
       RemoveFromLog(errorlog);
       return false;
     }
+  }
   RemoveFromLog(errorlog);
   return true;
 }
@@ -353,37 +354,35 @@ void PrintStr(voidString *str, char **errorlog) {
   RemoveFromLog(errorlog);
 }
 
-void *StrStr(voidString *voidStr1, voidString *voidStr2, int lower,
-             char **errorlog) {
+int StrStr(voidString *voidStr1, voidString *voidStr2, bool lower,
+           char **errorlog) {
   if (IsLogError(errorlog))
-    return NULL;
+    return -1;
   AddToLog(errorlog, "StrStr");
   if (!equalTypeMeta(voidStr1, voidStr2, errorlog)) {
     AddToLog(errorlog, "Error: not equal type meta~");
-    return NULL;
-  }
-  if (!(lower == 0 || lower == 1)) {
-    AddToLog(errorlog, "Error: lower is not bool~");
-    return NULL;
+    return -1;
   }
   if (lower) {
     ToLower(voidStr1, errorlog);
     if (IsLogError(errorlog))
-      return NULL;
+      return -1;
     ToLower(voidStr2, errorlog);
     if (IsLogError(errorlog))
-      return NULL;
+      return -1;
   }
   int start = 0;
   while (start <= voidStr1->len) {
-    if (Contains(voidStr1, voidStr2, start, voidStr1->len, errorlog)) {
+    if (Contains(voidStr1, voidStr2, start, voidStr2->len - 1, errorlog)) {
+      if (IsLogError(errorlog))
+        return -1;
       RemoveFromLog(errorlog);
-      return GetI(voidStr1, start, errorlog);
+      return start;
     }
     start++;
   }
   RemoveFromLog(errorlog);
-  return NULL;
+  return -1;
 }
 
 voidString *Substring(int i, int j, voidString *voidStr, char **errorlog) {

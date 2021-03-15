@@ -53,7 +53,7 @@ bool equalTypeMeta(voidString *, voidString *, char **);
 voidString *Recode(void *(*)(void *, char **), voidString *, typeMetadata *,
                    char **);
 
-void *StrStr(voidString *, voidString *, int, char **);
+int StrStr(voidString *, voidString *, bool, char **);
 
 bool Contains(voidString *, voidString *, int, int, char **);
 
