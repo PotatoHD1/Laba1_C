@@ -8,7 +8,8 @@
 #include <string.h>
 
 voidString *CreateString(typeMetadata *typeMeta, int len, char **errorlog) {
-  AddToLog(errorlog, "CreateString");
+  char funcName[] = "CreateString";
+  AddToLog(errorlog, funcName);
   assert(len > 0);
   assert(validTypeMeta(typeMeta, errorlog));
   voidString *res = (voidString *)calloc(1, sizeof(voidString));
@@ -20,11 +21,11 @@ voidString *CreateString(typeMetadata *typeMeta, int len, char **errorlog) {
 }
 void AddToLog(char **errorlog, char text[]) {
   int len = strlen(*errorlog);
-  if (len == 0) {
-    *errorlog = realloc(*errorlog, 5);
-    strcpy(*errorlog, "main");
-    len = 4;
-  }
+  //  if (len == 0) {
+  //    *errorlog = realloc(*errorlog, 5);
+  //    strcpy(*errorlog, "main");
+  //    len = 4;
+  //  }
   *errorlog = realloc(*errorlog, len + strlen(text) + 3 + 1);
   strcpy(*errorlog + len, " | ");
   strcpy(*errorlog + len + 3, text);
@@ -37,29 +38,42 @@ void RemoveFromLog(char **errorlog) {
     count++;
   (*errorlog)[len - (count + 2)] = '\0';
 }
+
+bool IsLogError(char **errorlog, char text[]) {
+  int count = 0;
+  int len = strlen(*errorlog);
+  while (count <= len && *(*errorlog + count) != '|')
+    count++;
+  return strcmp((*errorlog + len - count), text) != 0;
+}
 voidString *CreateFromCharArray(typeMetadata *typeMeta, int len, char *arr,
                                 char **errorlog) {
-  AddToLog(errorlog, "CreateFromCharArray");
+  char funcName[] = "CreateFromCharArray";
+  AddToLog(errorlog, funcName);
   assert(len > 0);
   assert(validTypeMeta(typeMeta, errorlog));
+  char *data = typeMeta->PreprocessStr(arr, errorlog);
   voidString *res = (voidString *)calloc(1, sizeof(voidString));
-  res->data = calloc(len, typeMeta->size + 1);
-  memcpy(res->data, arr, len * typeMeta->size);
+  if (arr == data) {
+    res->data = calloc(len, typeMeta->size + 1);
+    memcpy(res->data, arr, len * typeMeta->size);
+  } else
+    res->data = data;
   res->len = len + 1;
   res->typeMeta = typeMeta;
   RemoveFromLog(errorlog);
   return res;
 }
 
-typeMetadata *CreateTypeMeta(int size, int (*IsEqual)(void *, void *, char **),
-                             void *(*ToUTF8)(void *, char **),
-                             void *(*ToUNICODE)(void *, char **),
-                             void *(*ToASCII)(void *, char **),
-                             void *(*Lower)(void *, char **),
-                             void *(*Higher)(void *, char **),
-                             void (*SetLocale)(char **), void *(*Scan)(char **),
-                             void (*Print)(void *, char **), char **errorlog) {
-  AddToLog(errorlog, "CreateTypeMeta");
+typeMetadata *CreateTypeMeta(
+    int size, bool (*IsEqual)(void *, void *, char **),
+    void *(*ToUTF8)(void *, char **), void *(*ToUNICODE)(void *, char **),
+    void *(*ToASCII)(void *, char **), void *(*Lower)(void *, char **),
+    void *(*Higher)(void *, char **), void (*SetLocale)(char **),
+    void *(*Scan)(char **), void (*Print)(void *, char **),
+    void *(*PreprocessStr)(void *, char **), char **errorlog) {
+  char funcName[] = "CreateTypeMeta";
+  AddToLog(errorlog, funcName);
   typeMetadata *res = (typeMetadata *)calloc(1, sizeof(typeMetadata));
   res->size = size;
   res->IsEqual = IsEqual;
@@ -71,13 +85,15 @@ typeMetadata *CreateTypeMeta(int size, int (*IsEqual)(void *, void *, char **),
   res->SetLocale = SetLocale;
   res->Print = Print;
   res->Scan = Scan;
+  res->PreprocessStr = PreprocessStr;
   RemoveFromLog(errorlog);
   return res;
 }
 
-int equalTypeMeta(voidString *voidString1, voidString *voidString2,
-                  char **errorlog) {
-  AddToLog(errorlog, "equalTypeMeta");
+bool equalTypeMeta(voidString *voidString1, voidString *voidString2,
+                   char **errorlog) {
+  char funcName[] = "equalTypeMeta";
+  AddToLog(errorlog, funcName);
   assert(validStr(voidString1, errorlog) && validStr(voidString2, errorlog));
   RemoveFromLog(errorlog);
   return voidString1->typeMeta->size == voidString2->typeMeta->size &&
@@ -92,8 +108,9 @@ int equalTypeMeta(voidString *voidString1, voidString *voidString2,
          voidString1->typeMeta->Print == voidString2->typeMeta->Print;
 }
 
-int validTypeMeta(typeMetadata *typeMetadata, char **errorlog) {
-  AddToLog(errorlog, "validTypeMeta");
+bool validTypeMeta(typeMetadata *typeMetadata, char **errorlog) {
+  char funcName[] = "validTypeMeta";
+  AddToLog(errorlog, funcName);
   assert(typeMetadata != NULL);
   assert(typeMetadata->size > 0);
   assert(typeMetadata->SetLocale != NULL);
@@ -106,22 +123,24 @@ int validTypeMeta(typeMetadata *typeMetadata, char **errorlog) {
   assert(typeMetadata->Scan != NULL);
   assert(typeMetadata->Print != NULL);
   RemoveFromLog(errorlog);
-  return 1;
+  return true;
 }
 
-int validStr(voidString *voidStr, char **errorlog) {
-  AddToLog(errorlog, "validStr");
+bool validStr(voidString *voidStr, char **errorlog) {
+  char funcName[] = "validStr";
+  AddToLog(errorlog, funcName);
   assert(voidStr != NULL);
   assert(voidStr->data != NULL);
   assert(voidStr->len > 0);
   assert(validTypeMeta(voidStr->typeMeta, errorlog));
   RemoveFromLog(errorlog);
-  return 1;
+  return true;
 }
 
 voidString *Concat(voidString *voidStr1, voidString *voidStr2,
                    char **errorlog) {
-  AddToLog(errorlog, "Concat");
+  char funcName[] = "Concat";
+  AddToLog(errorlog, funcName);
   assert(equalTypeMeta(voidStr1, voidStr2, errorlog));
   voidString *res = CreateString(voidStr1->typeMeta,
                                  voidStr1->len + voidStr2->len - 2, errorlog);
@@ -135,7 +154,8 @@ voidString *Concat(voidString *voidStr1, voidString *voidStr2,
 
 voidString *Recode(void *(*func)(void *, char **), voidString *voidStr,
                    typeMetadata *newtypeMeta, char **errorlog) {
-  AddToLog(errorlog, "Recode");
+  char funcName[] = "Recode";
+  AddToLog(errorlog, funcName);
   assert(func != NULL && validStr(voidStr, errorlog));
   voidString *res = CreateString(newtypeMeta, voidStr->len - 1, errorlog);
   for (int i = 0; i < voidStr->len; ++i) {
@@ -148,14 +168,15 @@ voidString *Recode(void *(*func)(void *, char **), voidString *voidStr,
   return res;
 }
 
-int Contains(voidString *voidStr1, voidString *voidStr2, int start, int n,
-             char **errorlog) {
-  AddToLog(errorlog, "Contains");
+bool Contains(voidString *voidStr1, voidString *voidStr2, int start, int n,
+              char **errorlog) {
+  char funcName[] = "Contains";
+  AddToLog(errorlog, funcName);
   assert(equalTypeMeta(voidStr1, voidStr2, errorlog));
   assert(start >= 0 && n >= 0);
   if (voidStr2->len > (voidStr1->len - start) || voidStr2->len < n) {
     RemoveFromLog(errorlog);
-    return 0;
+    return false;
   }
 
   for (int i = start; i < start + n; ++i)
@@ -163,14 +184,15 @@ int Contains(voidString *voidStr1, voidString *voidStr2, int start, int n,
                                      GetI(voidStr1, i - start, errorlog),
                                      errorlog)) {
       RemoveFromLog(errorlog);
-      return 0;
+      return false;
     }
   RemoveFromLog(errorlog);
-  return 1;
+  return true;
 }
 
 void Map(void *(*func)(void *, char **), voidString *voidStr, char **errorlog) {
-  AddToLog(errorlog, "Map");
+  char funcName[] = "Map";
+  AddToLog(errorlog, funcName);
   assert(func != NULL && validStr(voidStr, errorlog));
   for (int i = 0; i < voidStr->len; ++i) {
     void *tmp = func(GetI(voidStr, i, errorlog), errorlog);
@@ -182,19 +204,22 @@ void Map(void *(*func)(void *, char **), voidString *voidStr, char **errorlog) {
 }
 
 void ToLower(voidString *str, char **errorlog) {
-  AddToLog(errorlog, "ToLower");
+  char funcName[] = "ToLower";
+  AddToLog(errorlog, funcName);
   Map(str->typeMeta->Lower, str, errorlog);
   RemoveFromLog(errorlog);
 }
 
 void ToHigher(voidString *str, char **errorlog) {
-  AddToLog(errorlog, "ToHigher");
+  char funcName[] = "ToHigher";
+  AddToLog(errorlog, funcName);
   Map(str->typeMeta->Higher, str, errorlog);
   RemoveFromLog(errorlog);
 }
 
 void ScanStr(voidString *str, char **errorlog) {
-  AddToLog(errorlog, "ScanStr");
+  char funcName[] = "ScanStr";
+  AddToLog(errorlog, funcName);
   for (int i = 0; i < str->len; ++i) {
     void *temp = str->typeMeta->Scan(errorlog);
     memcpy(GetI(str, i, errorlog), temp, str->typeMeta->size);
@@ -204,7 +229,8 @@ void ScanStr(voidString *str, char **errorlog) {
 }
 
 voidString *CreateFromScanf(typeMetadata *typeMeta, int len, char **errorlog) {
-  AddToLog(errorlog, "CreateFromScanf");
+  char funcName[] = "CreateFromScanf";
+  AddToLog(errorlog, funcName);
   assert(len > 0);
   assert(validTypeMeta(typeMeta, errorlog));
   voidString *res = (voidString *)calloc(1, sizeof(voidString));
@@ -221,7 +247,8 @@ voidString *CreateFromScanf(typeMetadata *typeMeta, int len, char **errorlog) {
 }
 
 void PrintStr(voidString *str, char **errorlog) {
-  AddToLog(errorlog, "PrintStr");
+  char funcName[] = "PrintStr";
+  AddToLog(errorlog, funcName);
   str->typeMeta->SetLocale(errorlog);
   for (int i = 0; i < str->len; ++i) {
     str->typeMeta->Print(GetI(str, i, errorlog), errorlog);
@@ -232,7 +259,8 @@ void PrintStr(voidString *str, char **errorlog) {
 
 void *StrStr(voidString *voidStr1, voidString *voidStr2, int lower,
              char **errorlog) {
-  AddToLog(errorlog, "StrStr");
+  char funcName[] = "StrStr";
+  AddToLog(errorlog, funcName);
   assert(equalTypeMeta(voidStr1, voidStr2, errorlog));
   assert(lower == 0 || lower == 1);
   if (lower) {
@@ -252,7 +280,8 @@ void *StrStr(voidString *voidStr1, voidString *voidStr2, int lower,
 }
 
 voidString *Substring(int a, int b, voidString *voidStr, char **errorlog) {
-  AddToLog(errorlog, "Substring");
+  char funcName[] = "Substring";
+  AddToLog(errorlog, funcName);
   assert(validStr(voidStr, errorlog));
   assert(a >= 0);
   assert(b > a);
@@ -265,7 +294,8 @@ voidString *Substring(int a, int b, voidString *voidStr, char **errorlog) {
 }
 
 void Delete(voidString *voidStr, char **errorlog) {
-  AddToLog(errorlog, "Delete");
+  char funcName[] = "Delete";
+  AddToLog(errorlog, funcName);
   assert(voidStr != NULL);
   if (voidStr->data != NULL) {
     voidStr->data = realloc(voidStr->data, 1);
@@ -276,7 +306,8 @@ void Delete(voidString *voidStr, char **errorlog) {
 }
 
 void *GetI(voidString *voidStr, int i, char **errorlog) {
-  AddToLog(errorlog, "GetI");
+  char funcName[] = "GetI";
+  AddToLog(errorlog, funcName);
   assert(validStr(voidStr, errorlog));
   assert(i >= 0);
   assert(i < voidStr->len);

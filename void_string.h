@@ -4,35 +4,38 @@
 
 #ifndef LABA1_VOID_STRING_H
 #define LABA1_VOID_STRING_H
+#include <stdbool.h>
 typedef struct voidString voidString;
 typedef struct typeMetadata typeMetadata;
 
 struct typeMetadata {
-    int size;
+  int size;
 
-    void (*SetLocale)(char **);
+  void (*SetLocale)(char **);
 
-    int (*IsEqual)(void *, void *, char **);
+  bool (*IsEqual)(void *, void *, char **);
 
-    void *(*ToUTF8)(void *, char **);
+  void *(*ToUTF8)(void *, char **);
 
-    void *(*ToUNICODE)(void *, char **);
+  void *(*ToUNICODE)(void *, char **);
 
-    void *(*ToASCII)(void *, char **);
+  void *(*ToASCII)(void *, char **);
 
-    void *(*Lower)(void *, char **);
+  void *(*Lower)(void *, char **);
 
-    void *(*Higher)(void *, char **);
+  void *(*Higher)(void *, char **);
 
-    void *(*Scan)(char **);
+  void *(*Scan)(char **);
 
-    void (*Print)(void *, char **);
+  void (*Print)(void *, char **);
+
+  void *(*PreprocessStr)(void *, char **);
 };
 
 struct voidString {
-    void *data;
-    int len;
-    typeMetadata *typeMeta;
+  void *data;
+  int len;
+  typeMetadata *typeMeta;
 };
 
 voidString *CreateFromCharArray(typeMetadata *, int, char *, char **);
@@ -47,23 +50,27 @@ void *GetI(voidString *, int, char **);
 
 voidString *CreateString(typeMetadata *, int, char **);
 
-int equalTypeMeta(voidString *, voidString *, char **);
+bool equalTypeMeta(voidString *, voidString *, char **);
 
-voidString *Recode(void *(*)(void *, char **), voidString *, typeMetadata *, char **);
+voidString *Recode(void *(*)(void *, char **), voidString *, typeMetadata *,
+                   char **);
 
 void *StrStr(voidString *, voidString *, int, char **);
 
-int Contains(voidString *, voidString *, int, int, char **);
+bool Contains(voidString *, voidString *, int, int, char **);
 
-int validTypeMeta(typeMetadata *, char **);
+bool validTypeMeta(typeMetadata *, char **);
 
-int validStr(voidString *, char **);
+bool validStr(voidString *, char **);
 
-typeMetadata *
-CreateTypeMeta(int, int (*)(void *, void *, char **), void *(*)(void *, char **), void *(*)(void *, char **),
-               void *(*)(void *, char **),
-               void *(*)(void *, char **), void *(*)(void *, char **), void(*)(char **), void *(*)(char **),
-               void (*)(void *, char **), char **);
+typeMetadata *CreateTypeMeta(int, bool (*)(void *, void *, char **),
+                             void *(*)(void *, char **),
+                             void *(*)(void *, char **),
+                             void *(*)(void *, char **),
+                             void *(*)(void *, char **),
+                             void *(*)(void *, char **), void (*)(char **),
+                             void *(*)(char **), void (*)(void *, char **),
+                             void *(*)(void *, char **), char **);
 
 void Map(void *(*)(void *, char **), voidString *, char **);
 
@@ -71,8 +78,10 @@ void ToLower(voidString *, char **);
 
 void ToHigher(voidString *, char **);
 
-void AddToLog(char **, char []);
+void AddToLog(char **, char[]);
 
 void RemoveFromLog(char **);
 
-#endif //LABA1_VOID_STRING_H
+bool IsLogError(char **, char[]);
+
+#endif // LABA1_VOID_STRING_H

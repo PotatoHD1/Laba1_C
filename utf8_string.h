@@ -5,7 +5,7 @@
 #ifndef LABA1_UTF8_STRING_H
 #define LABA1_UTF8_STRING_H
 
-int UTF8IsEqual(void *, void *, char **);
+bool UTF8IsEqual(void *, void *, char **);
 
 void *UTF8ToUTF8(void *, char **);
 
@@ -17,7 +17,7 @@ void *UTF8Lower(void *, char **);
 
 void *UTF8Higher(void *, char **);
 
-int UTF8IsValid(void *, char **);
+bool UTF8IsValid(void *, char **);
 
 typeMetadata *CreateUTF8Meta(char **);
 
@@ -29,6 +29,6 @@ void *ScanUTF8(char **);
 
 void PrintUTF8(void *, char **);
 
-void SetUTF8Locale(char **);
+void *PreprocessUFT8Str(void *, char **);
 
-#endif //LABA1_UTF8_STRING_H
+#endif // LABA1_UTF8_STRING_H

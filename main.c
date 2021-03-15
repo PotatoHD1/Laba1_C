@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "void_string.c"
 #include "ascii_string.c"
 #include "unicode_string.c"
