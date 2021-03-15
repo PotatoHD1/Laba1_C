@@ -35,8 +35,9 @@ void AddToLog(char **errorlog, char text[]) {
 void RemoveFromLog(char **errorlog) {
   int count = 0;
   int len = strlen(*errorlog);
-  while (count <= len && *(*errorlog + count) != '|')
+  while (count <= len && (*errorlog)[len - count - 1] != '|')
     count++;
+  *errorlog = realloc(*errorlog, len - (count + 1));
   (*errorlog)[len - (count + 2)] = '\0';
 }
 
@@ -211,11 +212,10 @@ voidString *Concat(voidString *voidStr1, voidString *voidStr2,
     return NULL;
   memcpy(res->data, voidStr1->data,
          (voidStr1->len - 1) * voidStr1->typeMeta->size);
-  void * tmp = GetI(res, voidStr1->len - 1, errorlog);
+  void *tmp = GetI(res, voidStr1->len - 1, errorlog);
   if (IsLogError(errorlog))
     return NULL;
-  memcpy(tmp, voidStr2->data,
-         (voidStr2->len - 1) * voidStr2->typeMeta->size);
+  memcpy(tmp, voidStr2->data, (voidStr2->len - 1) * voidStr2->typeMeta->size);
   if (IsLogError(errorlog))
     return NULL;
   RemoveFromLog(errorlog);
@@ -247,7 +247,7 @@ voidString *Recode(void *(*func)(void *, char **), voidString *voidStr,
       AddToLog(errorlog, "Error: func returned NULL~");
       return NULL;
     }
-    void * tmp1 = GetI(res, i, errorlog);
+    void *tmp1 = GetI(res, i, errorlog);
     if (IsLogError(errorlog))
       return NULL;
     memcpy(tmp1, tmp, voidStr->typeMeta->size);
@@ -309,7 +309,7 @@ void Map(void *(*func)(void *, char **), voidString *voidStr, char **errorlog) {
       AddToLog(errorlog, "Error: tmp == NULL~");
       return;
     }
-    void * tmp1 = GetI(voidStr, i, errorlog);
+    void *tmp1 = GetI(voidStr, i, errorlog);
     if (IsLogError(errorlog))
       return;
     memcpy(tmp1, tmp, voidStr->typeMeta->size);
@@ -406,11 +406,10 @@ voidString *Substring(int i, int j, voidString *voidStr, char **errorlog) {
   voidString *res = CreateString(voidStr->typeMeta, j - i + 1, errorlog);
   if (IsLogError(errorlog))
     return NULL;
-  void * tmp = GetI(voidStr, i, errorlog);
+  void *tmp = GetI(voidStr, i, errorlog);
   if (IsLogError(errorlog))
     return NULL;
-  res->data = memcpy(res->data, tmp,
-                     (j - i + 1) * voidStr->typeMeta->size);
+  res->data = memcpy(res->data, tmp, (j - i + 1) * voidStr->typeMeta->size);
   RemoveFromLog(errorlog);
   return res;
 }

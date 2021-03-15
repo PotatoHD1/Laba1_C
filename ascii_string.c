@@ -33,7 +33,10 @@ bool ASCIIIsValid(void *character, char **errorlog) {
   if (IsLogError(errorlog))
     return NULL;
   AddToLog(errorlog, "ASCIIIsValid");
-  assert(character != NULL);
+  if (character == NULL) {
+    AddToLog(errorlog, "Error: character == NULL~");
+    return NULL;
+  }
   RemoveFromLog(errorlog);
   return true;
 }
@@ -42,8 +45,12 @@ bool ASCIIIsEqual(void *character1, void *character2, char **errorlog) {
   if (IsLogError(errorlog))
     return NULL;
   AddToLog(errorlog, "ASCIIIsEqual");
-  assert(ASCIIIsValid(character1, errorlog) &&
-         ASCIIIsValid(character2, errorlog));
+  ASCIIIsValid(character1, errorlog);
+  if (IsLogError(errorlog))
+    return NULL;
+  ASCIIIsValid(character2, errorlog);
+  if (IsLogError(errorlog))
+    return NULL;
   RemoveFromLog(errorlog);
   return *(char *)character1 == *(char *)character2;
 }
@@ -52,7 +59,9 @@ void *ASCIIToUTF8(void *character, char **errorlog) {
   if (IsLogError(errorlog))
     return NULL;
   AddToLog(errorlog, "ASCIIToUTF8");
-  assert(ASCIIIsValid(character, errorlog));
+  ASCIIIsValid(character, errorlog);
+  if (IsLogError(errorlog))
+    return NULL;
   char *res;
   res = calloc(1, 1);
   *(res) = *(char *)character;
@@ -64,7 +73,9 @@ void *ASCIIToUNICODE(void *character, char **errorlog) {
   if (IsLogError(errorlog))
     return NULL;
   AddToLog(errorlog, "ASCIIToUNICODE");
-  assert(ASCIIIsValid(character, errorlog));
+  ASCIIIsValid(character, errorlog);
+  if (IsLogError(errorlog))
+    return NULL;
   char *res;
   res = calloc(1, 1);
   *(res) = *(char *)character;
@@ -78,6 +89,10 @@ void *ASCIILower(void *character, char **errorlog) {
   if (IsLogError(errorlog))
     return NULL;
   AddToLog(errorlog, "ASCIILower");
+  ASCIIIsValid(character, errorlog);
+  if (IsLogError(errorlog))
+    return NULL;
+
   char *res = (char *)calloc(1, 1);
   if (*(char *)character >= 'A' && *(char *)character <= 'Z')
     *res = 'a' - 'A' + *(char *)character;
@@ -91,6 +106,10 @@ void *ASCIIHigher(void *character, char **errorlog) {
   if (IsLogError(errorlog))
     return NULL;
   AddToLog(errorlog, "ASCIIHigher");
+  ASCIIIsValid(character, errorlog);
+  if (IsLogError(errorlog))
+    return NULL;
+
   char *res = (char *)calloc(1, 1);
   if (*(char *)character >= 'a' && *(char *)character <= 'z')
     *res = 'A' - 'a' + *(char *)character;

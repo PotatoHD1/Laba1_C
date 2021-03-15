@@ -31,10 +31,16 @@ bool UTF8IsValid(void *character, char **errorlog) {
   if (IsLogError(errorlog))
     return NULL;
   AddToLog(errorlog, "UTF8IsValid");
-  assert(character != NULL);
-  assert(((unsigned char *)character)[0] < 128 ||
-         !(((unsigned char *)character)[0] >= 128 &&
-           ((unsigned char *)character)[0] <= 191));
+  if (character == NULL) {
+    AddToLog(errorlog, "Error: character == NULL~");
+    return NULL;
+  }
+  if (!(((unsigned char *)character)[0] < 128 ||
+        !(((unsigned char *)character)[0] >= 128 &&
+          ((unsigned char *)character)[0] <= 191))) {
+    AddToLog(errorlog, "Error: bad character character~");
+    return NULL;
+  }
   RemoveFromLog(errorlog);
   return true;
 }
@@ -63,7 +69,9 @@ int UTF8GetLen(void *character, char **errorlog) {
   if (IsLogError(errorlog))
     return 0;
   AddToLog(errorlog, "UTF8GetLen");
-  assert(UTF8IsValid(character, errorlog));
+  UTF8IsValid(character, errorlog);
+  if (IsLogError(errorlog))
+    return 0;
   int res = 1;
   if (*((unsigned char *)character) > 128)
     while ((*((unsigned char *)character + res) >= 128 &&
@@ -80,24 +88,30 @@ void *UTF8ToUNICODE(void *character, char **errorlog) {
   if (IsLogError(errorlog))
     return NULL;
   AddToLog(errorlog, "UTF8ToUNICODE");
-  assert(0);
-  RemoveFromLog(errorlog);
+  AddToLog(errorlog, "Error: Not implemented~");
   return NULL;
+  //
+  //  RemoveFromLog(errorlog);
+  //  return NULL;
 }
 
 void *UTF8ToASCII(void *character, char **errorlog) {
   if (IsLogError(errorlog))
     return NULL;
   AddToLog(errorlog, "UTF8ToASCII");
-  assert(0);
-  RemoveFromLog(errorlog);
+  AddToLog(errorlog, "Error: Not implemented~");
   return NULL;
+  //  RemoveFromLog(errorlog);
+  //  return NULL;
 }
 
 void *UTF8Lower(void *character, char **errorlog) {
   if (IsLogError(errorlog))
     return NULL;
   AddToLog(errorlog, "UTF8Lower");
+  ASCIIIsValid(character, errorlog);
+  if (IsLogError(errorlog))
+    return NULL;
   int len = UTF8GetLen(character, errorlog);
   unsigned char *res = calloc(len, sizeof(char));
   if (len == 1 && *(unsigned char *)character >= 65 &&
@@ -119,6 +133,9 @@ void *UTF8Higher(void *character, char **errorlog) {
   if (IsLogError(errorlog))
     return NULL;
   AddToLog(errorlog, "UTF8Higher");
+  ASCIIIsValid(character, errorlog);
+  if (IsLogError(errorlog))
+    return NULL;
   int len = UTF8GetLen(character, errorlog);
   unsigned char *res = calloc(len, sizeof(char));
   if (len == 1 && *(unsigned char *)character >= 97 &&
@@ -153,4 +170,19 @@ void *PreprocessUTF8Str(void *str, char **errorlog) {
   }
   RemoveFromLog(errorlog);
   return res;
+}
+
+int UTF8GetStrLen(char *str, char **errorlog) {
+  int len = strlen((char *)str);
+  int local_len = 0;
+  int symbols = 0;
+
+  while (local_len <= len) {
+    int tmp = UTF8GetLen((char *)str + local_len, errorlog);
+    //    memcpy(res + symbols * sizeof(char) * 4, (char *)str + local_len,
+    //    tmp);
+    symbols++;
+    local_len += tmp;
+  }
+  return symbols;
 }

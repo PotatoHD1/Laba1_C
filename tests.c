@@ -204,8 +204,7 @@ void ErrorsTests(float *testsCount, float *passTestsCount, char **errorlog) {
 void RunAllTests() {
   char **errorlog = calloc(1, sizeof(char *));
   *errorlog = calloc(1, 1);
-  char funcName[] = "RunAllTests";
-  AddToLog(errorlog, funcName);
+  AddToLog(errorlog, "RunAllTests");
   float testsCount = 0;
   float passTestsCount = 0;
   ConcatTests(&testsCount, &passTestsCount, errorlog);
@@ -215,7 +214,7 @@ void RunAllTests() {
   ErrorsTests(&testsCount, &passTestsCount, errorlog);
   printf("Total:\n");
   PrintRes(testsCount, passTestsCount);
-  RemoveFromLog(errorlog);
+  printf("%s\n", *errorlog);
   free(*errorlog);
   free(errorlog);
 }
