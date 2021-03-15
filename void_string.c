@@ -75,7 +75,6 @@ voidString *CreateFromCharArray(typeMetadata *typeMeta, int len, char *arr,
   RemoveFromLog(errorlog);
   return res;
 }
-
 typeMetadata *CreateTypeMeta(
     int size, bool (*IsEqual)(void *, void *, char **),
     void *(*ToUTF8)(void *, char **), void *(*ToUNICODE)(void *, char **),

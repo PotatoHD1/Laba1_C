@@ -162,7 +162,7 @@ void *PreprocessUTF8Str(void *str, char **errorlog) {
   int local_len = 0;
   int symbols = 0;
 
-  while (local_len <= len) {
+  while (local_len < len) {
     int tmp = UTF8GetLen((char *)str + local_len, errorlog);
     memcpy(res + symbols * sizeof(char) * 4, (char *)str + local_len, tmp);
     symbols++;
@@ -176,11 +176,8 @@ int UTF8GetStrLen(char *str, char **errorlog) {
   int len = strlen((char *)str);
   int local_len = 0;
   int symbols = 0;
-
-  while (local_len <= len) {
+  while (local_len < len) {
     int tmp = UTF8GetLen((char *)str + local_len, errorlog);
-    //    memcpy(res + symbols * sizeof(char) * 4, (char *)str + local_len,
-    //    tmp);
     symbols++;
     local_len += tmp;
   }

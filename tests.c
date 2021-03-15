@@ -123,13 +123,15 @@ void SubStrTests(float *testsCount, float *passTestsCount, char **errorlog) {
   localTestsCount++;
 
   char res3[] = "кен";
-  if (strcmp((char *)b->data, res3) == 0) {
+  voidString *c = CreateFromCharArray(utf8, UTF8GetStrLen(res3, errorlog), res3, errorlog);
+  if (StrIsEqual(b, c, errorlog)) {
     localPassTestsCount++;
     printf("Pass test %.0f\n", localTestsCount);
   } else
     printf("Fail test %.0f\n", localTestsCount);
   Delete(a, errorlog);
   Delete(b, errorlog);
+  Delete(c, errorlog);
   free(ascii);
   free(utf8);
   free(unicode);
@@ -154,9 +156,9 @@ void RecodeTests(float *testsCount, float *passTestsCount, char **errorlog) {
   voidString *a = CreateFromCharArray(ascii, strlen(input1), input1, errorlog);
   voidString *b = Recode(a->typeMeta->ToUTF8, a, utf8, errorlog);
   localTestsCount++;
-  char res1[] =
-      "1\0\0\02\0\0\03\0\0\04\0\0\05\0\0\06\0\0\07\0\0\08\0\0\09\0\0\00\0\0\0";
-  if (strcmp((char *)b->data, res1) == 0) {
+  char res1[] = "1234567890";
+  voidString *c = CreateFromCharArray(utf8, strlen(res1), res1, errorlog);
+  if (StrIsEqual(b, c, errorlog)) {
     localPassTestsCount++;
     printf("Pass test %.0f\n", localTestsCount);
   } else
@@ -164,6 +166,7 @@ void RecodeTests(float *testsCount, float *passTestsCount, char **errorlog) {
 
   Delete(a, errorlog);
   Delete(b, errorlog);
+  Delete(c, errorlog);
   free(ascii);
   free(utf8);
   free(unicode);
@@ -214,7 +217,8 @@ void RunAllTests() {
   ErrorsTests(&testsCount, &passTestsCount, errorlog);
   printf("Total:\n");
   PrintRes(testsCount, passTestsCount);
-  printf("%s\n", *errorlog);
+  RemoveFromLog(errorlog);
+  printf("%s", *errorlog);
   free(*errorlog);
   free(errorlog);
 }
