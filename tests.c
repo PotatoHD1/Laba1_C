@@ -9,8 +9,9 @@ void PrintRes(float testsCount, float passTestsCount) {
 }
 
 void ConcatTests(float *testsCount, float *passTestsCount, char **errorlog) {
-  char funcName[] = "ConcatTests";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return;
+  AddToLog(errorlog, "ConcatTests");
   printf("ConcatTests:\n");
   float localTestsCount = 0;
   float localPassTestsCount = 0;
@@ -50,14 +51,10 @@ void ConcatTests(float *testsCount, float *passTestsCount, char **errorlog) {
   Delete(b, errorlog);
   Delete(c, errorlog);
   utf8->SetLocale(errorlog);
-  char input5[] = "Н\0\0е\0\0м\0\0н\0\0о\0\0г\0\0о\0\0 "
-                  "\0\0\0в\0\0х\0\0о\0\0д\0\0н\0\0о\0\0г\0\0о\0\0 "
-                  "\0\0\0т\0\0е\0\0к\0\0с\0\0т\0\0а\0\0\n\0\0\0";
-  char input6[] = "Е\0\0щ\0\0ё\0 н\0\0е\0\0м\0\0н\0\0о\0\0г\0\0о\0\0 "
-                  "\0\0\0в\0\0х\0\0о\0\0д\0\0н\0\0о\0\0г\0\0о\0\0 "
-                  "\0\0\0т\0\0е\0\0к\0\0с\0\0т\0\0а\0\0\n\0\0\0";
-  a = CreateFromCharArray(utf8, strlen(input3), input5, errorlog);
-  b = CreateFromCharArray(utf8, strlen(input4), input6, errorlog);
+  char input5[] = "Немного входного текста\n";
+  char input6[] = "Ещё немного входного текста\n";
+  a = CreateFromCharArray(utf8, strlen(input5), input5, errorlog);
+  b = CreateFromCharArray(utf8, strlen(input6), input6, errorlog);
   c = Concat(a, b, errorlog);
   localTestsCount++;
   char res3[] = "Н\0\0е\0\0м\0\0н\0\0о\0\0г\0\0о\0\0 "
@@ -84,8 +81,9 @@ void ConcatTests(float *testsCount, float *passTestsCount, char **errorlog) {
 }
 
 void SubStrTests(float *testsCount, float *passTestsCount, char **errorlog) {
-  char funcName[] = "SubStrTests";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return;
+  AddToLog(errorlog, "SubStrTests");
   printf("SubStrTests:\n");
   float localTestsCount = 0;
   float localPassTestsCount = 0;
@@ -119,11 +117,12 @@ void SubStrTests(float *testsCount, float *passTestsCount, char **errorlog) {
   Delete(a, errorlog);
   Delete(b, errorlog);
   utf8->SetLocale(errorlog);
-  char input3[] = "й\0\0ц\0\0у\0\0к\0\0е\0\0н\0\0г\0\0";
-  a = CreateFromCharArray(utf8, strlen(input2), input3, errorlog);
+  char input3[] = "йцукен";
+  a = CreateFromCharArray(utf8, strlen(input3), input3, errorlog);
   b = Substring(3, 5, a, errorlog);
   localTestsCount++;
-  char res3[] = "к\0\0е\0\0н\0\0";
+
+  char res3[] = "кен";
   if (strcmp((char *)b->data, res3) == 0) {
     localPassTestsCount++;
     printf("Pass test %.0f\n", localTestsCount);
@@ -141,8 +140,9 @@ void SubStrTests(float *testsCount, float *passTestsCount, char **errorlog) {
 }
 
 void RecodeTests(float *testsCount, float *passTestsCount, char **errorlog) {
-  char funcName[] = "RecodeTests";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return;
+  AddToLog(errorlog, "RecodeTests");
   printf("RecodeTests:\n");
   float localTestsCount = 0;
   float localPassTestsCount = 0;
@@ -174,8 +174,9 @@ void RecodeTests(float *testsCount, float *passTestsCount, char **errorlog) {
 }
 
 void WriteTests(float *testsCount, float *passTestsCount, char **errorlog) {
-  char funcName[] = "WriteTests";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return;
+  AddToLog(errorlog, "WriteTests");
   printf("WriteTests:\n");
   float localTestsCount = 0;
   float localPassTestsCount = 0;
@@ -187,8 +188,9 @@ void WriteTests(float *testsCount, float *passTestsCount, char **errorlog) {
 }
 
 void ErrorsTests(float *testsCount, float *passTestsCount, char **errorlog) {
-  char funcName[] = "ErrorsTests";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return;
+  AddToLog(errorlog, "ErrorsTests");
   printf("ErrorsTests:\n");
   float localTestsCount = 0;
   float localPassTestsCount = 0;

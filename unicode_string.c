@@ -8,44 +8,39 @@
 typeMetadata *CreateUNICODEMeta(char **errorlog) {
   return CreateTypeMeta(sizeof(char), UNICODEIsEqual, UNICODEToUTF8,
                         UNICODEToUNICODE, UNICODEToASCII, UNICODELower,
-                        UNICODEHigher, SetUNICODELocale, ScanUNICODE,
-                        PrintUNICODE, PreprocessUNICODEStr, errorlog);
+                        UNICODEHigher, SetUNICODELocale, PrintUNICODE,
+                        PreprocessUNICODEStr, errorlog);
 }
 
 void SetUNICODELocale(char **errorlog) {
-  char funcName[] = "SetUNICODELocale";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return;
+  AddToLog(errorlog, "SetUNICODELocale");
   setlocale(LC_ALL, "ru-RU.1251");
   RemoveFromLog(errorlog);
 }
 
-void *ScanUNICODE(char **errorlog) {
-  char funcName[] = "ScanUNICODE";
-  AddToLog(errorlog, funcName);
-  char *res = calloc(1, sizeof(char));
-  *res = getchar();
-  RemoveFromLog(errorlog);
-  return res;
-}
-
 void PrintUNICODE(void *el, char **errorlog) {
-  char funcName[] = "PrintUNICODE";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return;
+  AddToLog(errorlog, "PrintUNICODE");
   printf("%c", *(char *)el);
   RemoveFromLog(errorlog);
 }
 
 bool UNICODEIsValid(void *character1, char **errorlog) {
-  char funcName[] = "UNICODEIsValid";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return NULL;
+  AddToLog(errorlog, "UNICODEIsValid");
   assert(character1 != NULL);
   RemoveFromLog(errorlog);
   return true;
 }
 
 bool UNICODEIsEqual(void *character1, void *character2, char **errorlog) {
-  char funcName[] = "UNICODEIsEqual";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return NULL;
+  AddToLog(errorlog, "UNICODEIsEqual");
   assert(UNICODEIsValid(character1, errorlog) &&
          UNICODEIsValid(character2, errorlog));
   RemoveFromLog(errorlog);
@@ -53,8 +48,9 @@ bool UNICODEIsEqual(void *character1, void *character2, char **errorlog) {
 }
 
 void *UNICODEToUTF8(void *character, char **errorlog) {
-  char funcName[] = "UNICODEToUTF8";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return NULL;
+  AddToLog(errorlog, "UNICODEToUTF8");
   assert(UNICODEIsValid(character, errorlog));
   unsigned char *res;
   if (*(unsigned char *)character < 128) {
@@ -72,16 +68,18 @@ void *UNICODEToUTF8(void *character, char **errorlog) {
 void *UNICODEToUNICODE(void *character, char **errorlog) { return character; }
 
 void *UNICODEToASCII(void *character, char **errorlog) {
-  char funcName[] = "UNICODEToASCII";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return NULL;
+  AddToLog(errorlog, "UNICODEToASCII");
   assert(0);
   RemoveFromLog(errorlog);
   return NULL;
 }
 
 void *UNICODELower(void *character, char **errorlog) {
-  char funcName[] = "UNICODELower";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return NULL;
+  AddToLog(errorlog, "UNICODELower");
   unsigned char *res = (unsigned char *)calloc(1, 1);
   if (*(char *)character >= 'A' && *(char *)character <= 'Z')
     *res = 'a' - 'A' + *(unsigned char *)character;
@@ -100,8 +98,9 @@ void *UNICODELower(void *character, char **errorlog) {
 }
 
 void *UNICODEHigher(void *character, char **errorlog) {
-  char funcName[] = "UNICODEHigher";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return NULL;
+  AddToLog(errorlog, "UNICODEHigher");
   unsigned char *res = (unsigned char *)calloc(1, 1);
   if (*(char *)character >= 'a' && *(char *)character <= 'z')
     *res = 'A' - 'a' + *(unsigned char *)character;

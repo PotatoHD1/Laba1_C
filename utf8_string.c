@@ -8,47 +8,41 @@
 typeMetadata *CreateUTF8Meta(char **errorlog) {
   return CreateTypeMeta(sizeof(char) * 4, UTF8IsEqual, UTF8ToUTF8,
                         UTF8ToUNICODE, UTF8ToASCII, UTF8Lower, UTF8Higher,
-                        SetUTF8Locale, ScanUTF8, PrintUTF8, PreprocessUFT8Str,
-                        errorlog);
+                        SetUTF8Locale, PrintUTF8, PreprocessUTF8Str, errorlog);
 }
 
 void SetUTF8Locale(char **errorlog) {
-  char funcName[] = "SetUTF8Locale";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return;
+  AddToLog(errorlog, "SetUTF8Locale");
   setlocale(LC_ALL, "ru-RU.UTF8");
   RemoveFromLog(errorlog);
 }
 
-void *ScanUTF8(char **errorlog) {
-  char funcName[] = "ScanUTF8";
-  AddToLog(errorlog, funcName);
-  wchar_t *res = calloc(4, sizeof(char));
-  *res = getwchar();
-  RemoveFromLog(errorlog);
-  return res;
-}
-
 void PrintUTF8(void *el, char **errorlog) {
-  char funcName[] = "PrintUTF8";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return;
+  AddToLog(errorlog, "PrintUTF8");
   printf("%s", (char *)el);
   RemoveFromLog(errorlog);
 }
 
 bool UTF8IsValid(void *character, char **errorlog) {
-  char funcName[] = "UTF8IsValid";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return NULL;
+  AddToLog(errorlog, "UTF8IsValid");
   assert(character != NULL);
   assert(((unsigned char *)character)[0] < 128 ||
-         (((unsigned char *)character)[0] >= 128 &&
-          ((unsigned char *)character)[0] <= 191));
+         !(((unsigned char *)character)[0] >= 128 &&
+           ((unsigned char *)character)[0] <= 191));
   RemoveFromLog(errorlog);
   return true;
 }
 
 bool UTF8IsEqual(void *character1, void *character2, char **errorlog) {
-  char funcName[] = "UTF8IsEqual";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return NULL;
+  AddToLog(errorlog, "UTF8IsEqual");
   int len1 = UTF8GetLen(character1, errorlog);
   int len2 = UTF8GetLen(character2, errorlog);
   if (len1 != len2) {
@@ -66,8 +60,9 @@ bool UTF8IsEqual(void *character1, void *character2, char **errorlog) {
 }
 
 int UTF8GetLen(void *character, char **errorlog) {
-  char funcName[] = "UTF8GetLen";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return 0;
+  AddToLog(errorlog, "UTF8GetLen");
   assert(UTF8IsValid(character, errorlog));
   int res = 1;
   if (*((unsigned char *)character) > 128)
@@ -82,24 +77,27 @@ int UTF8GetLen(void *character, char **errorlog) {
 void *UTF8ToUTF8(void *character, char **errorlog) { return character; }
 
 void *UTF8ToUNICODE(void *character, char **errorlog) {
-  char funcName[] = "UTF8ToUNICODE";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return NULL;
+  AddToLog(errorlog, "UTF8ToUNICODE");
   assert(0);
   RemoveFromLog(errorlog);
   return NULL;
 }
 
 void *UTF8ToASCII(void *character, char **errorlog) {
-  char funcName[] = "UTF8ToASCII";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return NULL;
+  AddToLog(errorlog, "UTF8ToASCII");
   assert(0);
   RemoveFromLog(errorlog);
   return NULL;
 }
 
 void *UTF8Lower(void *character, char **errorlog) {
-  char funcName[] = "UTF8Lower";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return NULL;
+  AddToLog(errorlog, "UTF8Lower");
   int len = UTF8GetLen(character, errorlog);
   unsigned char *res = calloc(len, sizeof(char));
   if (len == 1 && *(unsigned char *)character >= 65 &&
@@ -118,8 +116,9 @@ void *UTF8Lower(void *character, char **errorlog) {
 }
 
 void *UTF8Higher(void *character, char **errorlog) {
-  char funcName[] = "UTF8Higher";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return NULL;
+  AddToLog(errorlog, "UTF8Higher");
   int len = UTF8GetLen(character, errorlog);
   unsigned char *res = calloc(len, sizeof(char));
   if (len == 1 && *(unsigned char *)character >= 97 &&
@@ -138,17 +137,17 @@ void *UTF8Higher(void *character, char **errorlog) {
 }
 
 void *PreprocessUTF8Str(void *str, char **errorlog) {
-  char funcName[] = "PreprocessUTF8Str";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return NULL;
+  AddToLog(errorlog, "PreprocessUTF8Str");
   int len = strlen((char *)str);
   char *res = calloc(1, sizeof(char) * 4 * len + 1);
   int local_len = 0;
   int symbols = 0;
-  //  int local_len = UTF8GetLen(str, errorlog);
 
   while (local_len <= len) {
-    int tmp = UTF8GetLen(str + local_len, errorlog);
-    memcpy(res + symbols * sizeof(char) * 4, str + local_len, tmp);
+    int tmp = UTF8GetLen((char *)str + local_len, errorlog);
+    memcpy(res + symbols * sizeof(char) * 4, (char *)str + local_len, tmp);
     symbols++;
     local_len += tmp;
   }

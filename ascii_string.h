@@ -23,8 +23,6 @@ typeMetadata *CreateASCIIMeta(char **);
 
 void SetASCIILocale(char **);
 
-void *ScanASCII(char **);
-
 void PrintASCII(void *, char **);
 
 void *PreprocessASCIIStr(void *, char **);

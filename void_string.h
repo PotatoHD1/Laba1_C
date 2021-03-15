@@ -25,8 +25,6 @@ struct typeMetadata {
 
   void *(*Higher)(void *, char **);
 
-  void *(*Scan)(char **);
-
   void (*Print)(void *, char **);
 
   void *(*PreprocessStr)(void *, char **);
@@ -63,14 +61,12 @@ bool validTypeMeta(typeMetadata *, char **);
 
 bool validStr(voidString *, char **);
 
-typeMetadata *CreateTypeMeta(int, bool (*)(void *, void *, char **),
-                             void *(*)(void *, char **),
-                             void *(*)(void *, char **),
-                             void *(*)(void *, char **),
-                             void *(*)(void *, char **),
-                             void *(*)(void *, char **), void (*)(char **),
-                             void *(*)(char **), void (*)(void *, char **),
-                             void *(*)(void *, char **), char **);
+typeMetadata *
+CreateTypeMeta(int, bool (*)(void *, void *, char **),
+               void *(*)(void *, char **), void *(*)(void *, char **),
+               void *(*)(void *, char **), void *(*)(void *, char **),
+               void *(*)(void *, char **), void (*)(char **),
+               void (*)(void *, char **), void *(*)(void *, char **), char **);
 
 void Map(void *(*)(void *, char **), voidString *, char **);
 
@@ -82,6 +78,8 @@ void AddToLog(char **, char[]);
 
 void RemoveFromLog(char **);
 
-bool IsLogError(char **, char[]);
+bool IsLogError(char **);
+
+bool StrIsEqual(voidString *, voidString *, char **);
 
 #endif // LABA1_VOID_STRING_H

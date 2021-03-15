@@ -25,10 +25,8 @@ int UTF8GetLen(void *, char **);
 
 void SetUTF8Locale(char **);
 
-void *ScanUTF8(char **);
-
 void PrintUTF8(void *, char **);
 
-void *PreprocessUFT8Str(void *, char **);
+void *PreprocessUTF8Str(void *, char **);
 
 #endif // LABA1_UTF8_STRING_H

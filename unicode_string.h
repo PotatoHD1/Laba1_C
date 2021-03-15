@@ -23,8 +23,6 @@ typeMetadata *CreateUNICODEMeta(char **);
 
 void SetUNICODELocale(char **);
 
-void *ScanUNICODE(char **);
-
 void PrintUNICODE(void *, char **);
 
 void *PreprocessUNICODEStr(void *, char **);

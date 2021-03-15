@@ -10,43 +10,38 @@
 typeMetadata *CreateASCIIMeta(char **errorlog) {
   return CreateTypeMeta(sizeof(char), ASCIIIsEqual, ASCIIToUTF8, ASCIIToUNICODE,
                         ASCIIToASCII, ASCIILower, ASCIIHigher, SetASCIILocale,
-                        ScanASCII, PrintASCII, PreprocessASCIIStr, errorlog);
+                        PrintASCII, PreprocessASCIIStr, errorlog);
 }
 
 void SetASCIILocale(char **errorlog) {
-  char funcName[] = "SetASCIILocale";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return;
+  AddToLog(errorlog, "SetASCIILocale");
   setlocale(LC_ALL, "ru-RU.1251");
   RemoveFromLog(errorlog);
 }
 
-void *ScanASCII(char **errorlog) {
-  char funcName[] = "ScanASCII";
-  AddToLog(errorlog, funcName);
-  char *res = calloc(1, sizeof(char));
-  *res = getchar();
-  RemoveFromLog(errorlog);
-  return res;
-}
-
 void PrintASCII(void *el, char **errorlog) {
-  char funcName[] = "PrintASCII";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return;
+  AddToLog(errorlog, "PrintASCII");
   printf("%c", *(char *)el);
   RemoveFromLog(errorlog);
 }
 
 bool ASCIIIsValid(void *character, char **errorlog) {
-  char funcName[] = "ASCIIIsValid";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return NULL;
+  AddToLog(errorlog, "ASCIIIsValid");
   assert(character != NULL);
   RemoveFromLog(errorlog);
   return true;
 }
 
 bool ASCIIIsEqual(void *character1, void *character2, char **errorlog) {
-  char funcName[] = "ASCIIIsEqual";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return NULL;
+  AddToLog(errorlog, "ASCIIIsEqual");
   assert(ASCIIIsValid(character1, errorlog) &&
          ASCIIIsValid(character2, errorlog));
   RemoveFromLog(errorlog);
@@ -54,8 +49,9 @@ bool ASCIIIsEqual(void *character1, void *character2, char **errorlog) {
 }
 
 void *ASCIIToUTF8(void *character, char **errorlog) {
-  char funcName[] = "ASCIIToUTF8";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return NULL;
+  AddToLog(errorlog, "ASCIIToUTF8");
   assert(ASCIIIsValid(character, errorlog));
   char *res;
   res = calloc(1, 1);
@@ -65,8 +61,9 @@ void *ASCIIToUTF8(void *character, char **errorlog) {
 }
 
 void *ASCIIToUNICODE(void *character, char **errorlog) {
-  char funcName[] = "ASCIIToUNICODE";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return NULL;
+  AddToLog(errorlog, "ASCIIToUNICODE");
   assert(ASCIIIsValid(character, errorlog));
   char *res;
   res = calloc(1, 1);
@@ -78,8 +75,9 @@ void *ASCIIToUNICODE(void *character, char **errorlog) {
 void *ASCIIToASCII(void *character, char **errorlog) { return character; }
 
 void *ASCIILower(void *character, char **errorlog) {
-  char funcName[] = "ASCIILower";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return NULL;
+  AddToLog(errorlog, "ASCIILower");
   char *res = (char *)calloc(1, 1);
   if (*(char *)character >= 'A' && *(char *)character <= 'Z')
     *res = 'a' - 'A' + *(char *)character;
@@ -90,8 +88,9 @@ void *ASCIILower(void *character, char **errorlog) {
 }
 
 void *ASCIIHigher(void *character, char **errorlog) {
-  char funcName[] = "ASCIIHigher";
-  AddToLog(errorlog, funcName);
+  if (IsLogError(errorlog))
+    return NULL;
+  AddToLog(errorlog, "ASCIIHigher");
   char *res = (char *)calloc(1, 1);
   if (*(char *)character >= 'a' && *(char *)character <= 'z')
     *res = 'A' - 'a' + *(char *)character;
@@ -101,4 +100,4 @@ void *ASCIIHigher(void *character, char **errorlog) {
   return res;
 }
 
-void *PreprocessASCIIStr(void *str, char **errorlog) { return errorlog; }
+void *PreprocessASCIIStr(void *str, char **errorlog) { return str; }
