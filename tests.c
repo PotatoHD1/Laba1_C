@@ -31,9 +31,9 @@ void ConcatTests(float *testsCount, float *passTestsCount, char **errorlog) {
     printf("Pass test %.0f\n", localTestsCount);
   } else
     printf("Fail test %.0f\n", localTestsCount);
-  Delete(a, errorlog);
-  Delete(b, errorlog);
-  Delete(c, errorlog);
+  Delete(&a, errorlog);
+  Delete(&b, errorlog);
+  Delete(&c, errorlog);
   unicode->SetLocale(errorlog);
   char input3[] = "Немного входного текста\n";
   char input4[] = "Ещё немного входного текста\n";
@@ -47,9 +47,9 @@ void ConcatTests(float *testsCount, float *passTestsCount, char **errorlog) {
     printf("Pass test %.0f\n", localTestsCount);
   } else
     printf("Fail test %.0f\n", localTestsCount);
-  Delete(a, errorlog);
-  Delete(b, errorlog);
-  Delete(c, errorlog);
+  Delete(&a, errorlog);
+  Delete(&b, errorlog);
+  Delete(&c, errorlog);
   utf8->SetLocale(errorlog);
   char input5[] = "Немного входного текста\n";
   char input6[] = "Ещё немного входного текста\n";
@@ -68,9 +68,9 @@ void ConcatTests(float *testsCount, float *passTestsCount, char **errorlog) {
     printf("Pass test %.0f\n", localTestsCount);
   } else
     printf("Fail test %.0f\n", localTestsCount);
-  Delete(a, errorlog);
-  Delete(b, errorlog);
-  Delete(c, errorlog);
+  Delete(&a, errorlog);
+  Delete(&b, errorlog);
+  Delete(&c, errorlog);
   free(ascii);
   free(utf8);
   free(unicode);
@@ -101,8 +101,8 @@ void SubStrTests(float *testsCount, float *passTestsCount, char **errorlog) {
     printf("Pass test %.0f\n", localTestsCount);
   } else
     printf("Fail test %.0f\n", localTestsCount);
-  Delete(a, errorlog);
-  Delete(b, errorlog);
+  Delete(&a, errorlog);
+  Delete(&b, errorlog);
   unicode->SetLocale(errorlog);
   char input2[] = "1234567890";
   a = CreateFromCharArray(unicode, strlen(input2), input2, errorlog);
@@ -114,8 +114,8 @@ void SubStrTests(float *testsCount, float *passTestsCount, char **errorlog) {
     printf("Pass test %.0f\n", localTestsCount);
   } else
     printf("Fail test %.0f\n", localTestsCount);
-  Delete(a, errorlog);
-  Delete(b, errorlog);
+  Delete(&a, errorlog);
+  Delete(&b, errorlog);
   utf8->SetLocale(errorlog);
   char input3[] = "йцукен";
   a = CreateFromCharArray(utf8, strlen(input3), input3, errorlog);
@@ -130,9 +130,9 @@ void SubStrTests(float *testsCount, float *passTestsCount, char **errorlog) {
     printf("Pass test %.0f\n", localTestsCount);
   } else
     printf("Fail test %.0f\n", localTestsCount);
-  Delete(a, errorlog);
-  Delete(b, errorlog);
-  Delete(c, errorlog);
+  Delete(&a, errorlog);
+  Delete(&b, errorlog);
+  Delete(&c, errorlog);
   free(ascii);
   free(utf8);
   free(unicode);
@@ -165,9 +165,9 @@ void RecodeTests(float *testsCount, float *passTestsCount, char **errorlog) {
   } else
     printf("Fail test %.0f\n", localTestsCount);
 
-  Delete(a, errorlog);
-  Delete(b, errorlog);
-  Delete(c, errorlog);
+  Delete(&a, errorlog);
+  Delete(&b, errorlog);
+  Delete(&c, errorlog);
   a = CreateFromCharArray(ascii, strlen(input1), input1, errorlog);
   b = Recode(a->typeMeta->ToUNICODE, a, unicode, errorlog);
   localTestsCount++;
@@ -178,9 +178,9 @@ void RecodeTests(float *testsCount, float *passTestsCount, char **errorlog) {
   } else
     printf("Fail test %.0f\n", localTestsCount);
 
-  Delete(a, errorlog);
-  Delete(b, errorlog);
-  Delete(c, errorlog);
+  Delete(&a, errorlog);
+  Delete(&b, errorlog);
+  Delete(&c, errorlog);
 
   a = CreateFromCharArray(ascii, strlen(input1), input1, errorlog);
   b = Recode(a->typeMeta->ToASCII, a, ascii, errorlog);
@@ -190,8 +190,8 @@ void RecodeTests(float *testsCount, float *passTestsCount, char **errorlog) {
     printf("Pass test %.0f\n", localTestsCount);
   } else
     printf("Fail test %.0f\n", localTestsCount);
-  Delete(a, errorlog);
-  Delete(b, errorlog);
+  Delete(&a, errorlog);
+  Delete(&b, errorlog);
   a = CreateFromCharArray(unicode, strlen(input1), input1, errorlog);
   b = Recode(a->typeMeta->ToUTF8, a, utf8, errorlog);
 
@@ -203,9 +203,9 @@ void RecodeTests(float *testsCount, float *passTestsCount, char **errorlog) {
     printf("Pass test %.0f\n", localTestsCount);
   } else
     printf("Fail test %.0f\n", localTestsCount);
-  Delete(a, errorlog);
-  Delete(b, errorlog);
-  Delete(c, errorlog);
+  Delete(&a, errorlog);
+  Delete(&b, errorlog);
+  Delete(&c, errorlog);
   free(ascii);
   free(utf8);
   free(unicode);
@@ -237,8 +237,8 @@ void StrStrTests(float *testsCount, float *passTestsCount, char **errorlog) {
     printf("Pass test %.0f\n", localTestsCount);
   } else
     printf("Fail test %.0f\n", localTestsCount);
-  Delete(a, errorlog);
-  Delete(b, errorlog);
+  Delete(&a, errorlog);
+  Delete(&b, errorlog);
   char input3[] = "abcedAbcdabcde";
   char input4[] = "abcd";
   a = CreateFromCharArray(ascii, strlen(input3), input3, errorlog);
@@ -257,8 +257,8 @@ void StrStrTests(float *testsCount, float *passTestsCount, char **errorlog) {
     printf("Pass test %.0f\n", localTestsCount);
   } else
     printf("Fail test %.0f\n", localTestsCount);
-  Delete(a, errorlog);
-  Delete(b, errorlog);
+  Delete(&a, errorlog);
+  Delete(&b, errorlog);
   a = CreateFromCharArray(unicode, strlen(input3), input3, errorlog);
   b = CreateFromCharArray(unicode, strlen(input4), input4, errorlog);
   localTestsCount++;
@@ -274,8 +274,8 @@ void StrStrTests(float *testsCount, float *passTestsCount, char **errorlog) {
     printf("Pass test %.0f\n", localTestsCount);
   } else
     printf("Fail test %.0f\n", localTestsCount);
-  Delete(a, errorlog);
-  Delete(b, errorlog);
+  Delete(&a, errorlog);
+  Delete(&b, errorlog);
   utf8->SetLocale(errorlog);
   a = CreateFromCharArray(utf8, strlen(input3), input3, errorlog);
   b = CreateFromCharArray(utf8, strlen(input4), input4, errorlog);
@@ -292,8 +292,8 @@ void StrStrTests(float *testsCount, float *passTestsCount, char **errorlog) {
     printf("Pass test %.0f\n", localTestsCount);
   } else
     printf("Fail test %.0f\n", localTestsCount);
-  Delete(a, errorlog);
-  Delete(b, errorlog);
+  Delete(&a, errorlog);
+  Delete(&b, errorlog);
 
   free(ascii);
   free(utf8);
@@ -327,8 +327,8 @@ void ErrorsTests(float *testsCount, float *passTestsCount) {
     printf("Fail test %.0f\n", localTestsCount);
   *errorlog = calloc(1, 1);
   AddToLog(errorlog, "ErrorsTests");
-  Delete(a, errorlog);
-  Delete(b, errorlog);
+  Delete(&a, errorlog);
+  Delete(&b, errorlog);
 
   utf8->Lower = NULL;
   a = CreateFromCharArray(utf8, strlen(input1), input1, errorlog);
@@ -342,8 +342,8 @@ void ErrorsTests(float *testsCount, float *passTestsCount) {
     printf("Fail test %.0f\n", localTestsCount);
   *errorlog = calloc(1, 1);
   AddToLog(errorlog, "ErrorsTests");
-  Delete(a, errorlog);
-  Delete(b, errorlog);
+  Delete(&a, errorlog);
+  Delete(&b, errorlog);
   free(utf8);
   utf8 = CreateUTF8Meta(errorlog);
   char input3[] = "12354123412345";
@@ -357,8 +357,8 @@ void ErrorsTests(float *testsCount, float *passTestsCount) {
     printf("Pass test %.0f\n", localTestsCount);
   } else
     printf("Fail test %.0f\n", localTestsCount);
-  Delete(b, errorlog);
-  Delete(c, errorlog);
+  Delete(&b, errorlog);
+  Delete(&c, errorlog);
   b = Recode(a->typeMeta->ToASCII, a, ascii, errorlog);
   printf("%s\n", *errorlog);
   localTestsCount++;
@@ -375,8 +375,8 @@ void ErrorsTests(float *testsCount, float *passTestsCount) {
     printf("Pass test %.0f\n", localTestsCount);
   } else
     printf("Fail test %.0f\n", localTestsCount);
-  Delete(a, errorlog);
-  Delete(b, errorlog);
+  Delete(&a, errorlog);
+  Delete(&b, errorlog);
   free(ascii);
   free(utf8);
   free(unicode);

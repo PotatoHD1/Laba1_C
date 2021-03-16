@@ -128,8 +128,8 @@ void StartUI() {
     }
     printf("%s\n", *errorlog);
   }
-  Delete(a, errorlog);
-  Delete(b, errorlog);
+  Delete(&a, errorlog);
+  Delete(&b, errorlog);
   free(ascii);
   free(utf8);
   free(unicode);

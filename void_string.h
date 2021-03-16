@@ -42,7 +42,7 @@ voidString *Concat(voidString *, voidString *, char **);
 
 voidString *Substring(int, int, voidString *, char **);
 
-void Delete(voidString *, char **);
+void Delete(voidString **, char **);
 
 void *GetI(voidString *, int, char **);
 

@@ -418,20 +418,21 @@ voidString *Substring(int i, int j, voidString *voidStr, char **errorlog) {
   return res;
 }
 
-void Delete(voidString *voidStr, char **errorlog) {
+void Delete(voidString **voidStr, char **errorlog) {
   if (IsLogError(errorlog))
     return;
   AddToLog(errorlog, "Delete");
-  if (voidStr == NULL) {
+  if (*voidStr == NULL) {
     //    AddToLog(errorlog, "Error: voidStr == NULL~");
     RemoveFromLog(errorlog);
     return;
   }
-  if (voidStr->data != NULL) {
-    voidStr->data = realloc(voidStr->data, 1);
-    free(voidStr->data);
+  if ((*voidStr)->data != NULL) {
+    (*voidStr)->data = realloc((*voidStr)->data, 1);
+    free((*voidStr)->data);
   }
-  free(voidStr);
+  free(*voidStr);
+  *voidStr = NULL;
   RemoveFromLog(errorlog);
 }
 
