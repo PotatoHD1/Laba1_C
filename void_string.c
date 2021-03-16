@@ -10,8 +10,8 @@ voidString *CreateString(typeMetadata *typeMeta, int len, char **errorlog) {
   if (IsLogError(errorlog))
     return NULL;
   AddToLog(errorlog, "CreateString");
-  if (len <= 0) {
-    AddToLog(errorlog, "Error: len <= 0~");
+  if (len < 0) {
+    AddToLog(errorlog, "Error: len < 0~");
     return NULL;
   }
   validTypeMeta(typeMeta, errorlog);
@@ -53,8 +53,8 @@ voidString *CreateFromCharArray(typeMetadata *typeMeta, int len, char *arr,
   if (IsLogError(errorlog))
     return NULL;
   AddToLog(errorlog, "CreateFromCharArray");
-  if (len <= 0) {
-    AddToLog(errorlog, "Error: len <= 0~");
+  if (len < 0) {
+    AddToLog(errorlog, "Error: len < 0~");
     return NULL;
   }
   validTypeMeta(typeMeta, errorlog);
@@ -208,12 +208,14 @@ voidString *Concat(voidString *voidStr1, voidString *voidStr2,
                                  voidStr1->len + voidStr2->len - 2, errorlog);
   if (IsLogError(errorlog))
     return NULL;
-  memcpy(res->data, voidStr1->data,
-         (voidStr1->len - 1) * voidStr1->typeMeta->size);
+  if (voidStr1->len - 1 > 0)
+    memcpy(res->data, voidStr1->data,
+           (voidStr1->len - 1) * voidStr1->typeMeta->size);
   void *tmp = GetI(res, voidStr1->len - 1, errorlog);
   if (IsLogError(errorlog))
     return NULL;
-  memcpy(tmp, voidStr2->data, (voidStr2->len - 1) * voidStr2->typeMeta->size);
+  if (voidStr2->len - 1 > 0)
+    memcpy(tmp, voidStr2->data, (voidStr2->len - 1) * voidStr2->typeMeta->size);
   if (IsLogError(errorlog))
     return NULL;
   RemoveFromLog(errorlog);
@@ -342,6 +344,9 @@ void PrintStr(voidString *str, char **errorlog) {
   if (IsLogError(errorlog))
     return;
   AddToLog(errorlog, "PrintStr");
+  validStr(str, errorlog);
+  if (IsLogError(errorlog))
+    return;
   str->typeMeta->SetLocale(errorlog);
   if (IsLogError(errorlog))
     return;
@@ -363,6 +368,7 @@ int StrStr(voidString *voidStr1, voidString *voidStr2, bool lower,
     AddToLog(errorlog, "Error: not equal type meta~");
     return -1;
   }
+
   if (lower) {
     ToLower(voidStr1, errorlog);
     if (IsLogError(errorlog))
@@ -417,7 +423,8 @@ void Delete(voidString *voidStr, char **errorlog) {
     return;
   AddToLog(errorlog, "Delete");
   if (voidStr == NULL) {
-    AddToLog(errorlog, "Error: voidStr == NULL~");
+    //    AddToLog(errorlog, "Error: voidStr == NULL~");
+    RemoveFromLog(errorlog);
     return;
   }
   if (voidStr->data != NULL) {

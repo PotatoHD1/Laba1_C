@@ -112,7 +112,7 @@ void *UTF8Lower(void *character, char **errorlog) {
   if (IsLogError(errorlog))
     return NULL;
   int len = UTF8GetLen(character, errorlog);
-  unsigned char *res = calloc(len, sizeof(char));
+  unsigned char *res = calloc(4, sizeof(char));
   if (len == 1 && *(unsigned char *)character >= 65 &&
       *(unsigned char *)character <= 90)
     res[0] = *(unsigned char *)character + 32;
@@ -124,6 +124,8 @@ void *UTF8Lower(void *character, char **errorlog) {
     *(uint16_t *)res = *(uint16_t *)character + 224;
   else if (len == 2 && *(uint16_t *)character == 53377)
     *(uint16_t *)res = 53649;
+  else
+    *(int *)res = *(int *)character;
   RemoveFromLog(errorlog);
   return res;
 }
@@ -136,7 +138,7 @@ void *UTF8Higher(void *character, char **errorlog) {
   if (IsLogError(errorlog))
     return NULL;
   int len = UTF8GetLen(character, errorlog);
-  unsigned char *res = calloc(len, sizeof(char));
+  unsigned char *res = calloc(4, sizeof(char));
   if (len == 1 && *(unsigned char *)character >= 97 &&
       *(unsigned char *)character <= 122)
     res[0] = *(unsigned char *)character - 32;
@@ -148,6 +150,8 @@ void *UTF8Higher(void *character, char **errorlog) {
     *(uint16_t *)res = *(uint16_t *)character - 224;
   else if (len == 2 && *(uint16_t *)character == 53649)
     *(uint16_t *)res = 53377;
+  else
+    *(int *)res = *(int *)character;
   RemoveFromLog(errorlog);
   return res;
 }

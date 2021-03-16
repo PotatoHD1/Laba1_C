@@ -5,6 +5,7 @@ CMakeFiles\Laba1.dir\main.c.obj: ..\ascii_string.c
 CMakeFiles\Laba1.dir\main.c.obj: ..\ascii_string.h
 CMakeFiles\Laba1.dir\main.c.obj: ..\main.c
 CMakeFiles\Laba1.dir\main.c.obj: ..\tests.c
+CMakeFiles\Laba1.dir\main.c.obj: ..\ui.c
 CMakeFiles\Laba1.dir\main.c.obj: ..\unicode_string.c
 CMakeFiles\Laba1.dir\main.c.obj: ..\unicode_string.h
 CMakeFiles\Laba1.dir\main.c.obj: ..\utf8_string.c

@@ -276,6 +276,7 @@ void StrStrTests(float *testsCount, float *passTestsCount, char **errorlog) {
     printf("Fail test %.0f\n", localTestsCount);
   Delete(a, errorlog);
   Delete(b, errorlog);
+  utf8->SetLocale(errorlog);
   a = CreateFromCharArray(utf8, strlen(input3), input3, errorlog);
   b = CreateFromCharArray(utf8, strlen(input4), input4, errorlog);
   localTestsCount++;
@@ -286,10 +287,6 @@ void StrStrTests(float *testsCount, float *passTestsCount, char **errorlog) {
     printf("Fail test %.0f\n", localTestsCount);
 
   localTestsCount++;
-  char * tmp = calloc(4,1);
-  tmp[0] = 'A';
-  tmp = UTF8Lower(tmp, errorlog);
-  
   if (StrStr(a, b, true, errorlog) == res1) {
     localPassTestsCount++;
     printf("Pass test %.0f\n", localTestsCount);
@@ -306,33 +303,89 @@ void StrStrTests(float *testsCount, float *passTestsCount, char **errorlog) {
   *passTestsCount += localPassTestsCount;
   RemoveFromLog(errorlog);
 }
-void ErrorsTests(float *testsCount, float *passTestsCount, char **errorlog) {
-  if (IsLogError(errorlog))
-    return;
+void ErrorsTests(float *testsCount, float *passTestsCount) {
+  char **errorlog = calloc(1, sizeof(char *));
+  *errorlog = calloc(1, 1);
   AddToLog(errorlog, "ErrorsTests");
   printf("ErrorsTests:\n");
   float localTestsCount = 0;
   float localPassTestsCount = 0;
+  typeMetadata *ascii = CreateASCIIMeta(errorlog);
+  typeMetadata *utf8 = CreateUTF8Meta(errorlog);
+  typeMetadata *unicode = CreateUNICODEMeta(errorlog);
+  char input1[] = "12354123412345";
+  char input2[] = "1234";
+  utf8->SetLocale(errorlog);
+  voidString *a = CreateFromCharArray(NULL, strlen(input1), input1, errorlog);
+  voidString *b = CreateFromCharArray(utf8, strlen(input2), input2, errorlog);
+  printf("%s\n", *errorlog);
+  localTestsCount++;
+  if (IsLogError(errorlog)) {
+    localPassTestsCount++;
+    printf("Pass test %.0f\n", localTestsCount);
+  } else
+    printf("Fail test %.0f\n", localTestsCount);
+  *errorlog = calloc(1, 1);
+  AddToLog(errorlog, "ErrorsTests");
+  Delete(a, errorlog);
+  Delete(b, errorlog);
+
+  utf8->Lower = NULL;
+  a = CreateFromCharArray(utf8, strlen(input1), input1, errorlog);
+  b = CreateFromCharArray(utf8, strlen(input2), input2, errorlog);
+  printf("%s\n", *errorlog);
+  localTestsCount++;
+  if (IsLogError(errorlog)) {
+    localPassTestsCount++;
+    printf("Pass test %.0f\n", localTestsCount);
+  } else
+    printf("Fail test %.0f\n", localTestsCount);
+  *errorlog = calloc(1, 1);
+  AddToLog(errorlog, "ErrorsTests");
+  Delete(a, errorlog);
+  Delete(b, errorlog);
+  free(utf8);
+  utf8 = CreateUTF8Meta(errorlog);
+  char input3[] = "12354123412345";
+  char input4[] = "";
+  a = CreateFromCharArray(utf8, strlen(input3), input3, errorlog);
+  b = CreateFromCharArray(utf8, strlen(input4), input4, errorlog);
+  voidString *c = Concat(a, b, errorlog);
+  localTestsCount++;
+  if (c->len == a->len) {
+    localPassTestsCount++;
+    printf("Pass test %.0f\n", localTestsCount);
+  } else
+    printf("Fail test %.0f\n", localTestsCount);
+  Delete(b, errorlog);
+  Delete(c, errorlog);
+  b = Recode(a->typeMeta->ToASCII, a, ascii, errorlog);
+  printf("%s\n", *errorlog);
+  localTestsCount++;
+  if (IsLogError(errorlog)) {
+    localPassTestsCount++;
+    printf("Pass test %.0f\n", localTestsCount);
+  } else
+    printf("Fail test %.0f\n", localTestsCount);
+  *errorlog = calloc(1, 1);
+  AddToLog(errorlog, "ErrorsTests");
+  localTestsCount++;
+  if (IsLogError(errorlog)) {
+    localPassTestsCount++;
+    printf("Pass test %.0f\n", localTestsCount);
+  } else
+    printf("Fail test %.0f\n", localTestsCount);
+  Delete(a, errorlog);
+  Delete(b, errorlog);
+  free(ascii);
+  free(utf8);
+  free(unicode);
 
   PrintRes(localTestsCount, localPassTestsCount);
   *testsCount += localTestsCount;
   *passTestsCount += localPassTestsCount;
   RemoveFromLog(errorlog);
 }
-// void ErrorsTests(float *testsCount, float *passTestsCount, char **errorlog) {
-//  if (IsLogError(errorlog))
-//    return;
-//  AddToLog(errorlog, "ErrorsTests");
-//  printf("ErrorsTests:\n");
-//  float localTestsCount = 0;
-//  float localPassTestsCount = 0;
-//
-//  PrintRes(localTestsCount, localPassTestsCount);
-//  *testsCount += localTestsCount;
-//  *passTestsCount += localPassTestsCount;
-//  RemoveFromLog(errorlog);
-//}
-
 void RunAllTests() {
   char **errorlog = calloc(1, sizeof(char *));
   *errorlog = calloc(1, 1);
@@ -343,7 +396,7 @@ void RunAllTests() {
   SubStrTests(&testsCount, &passTestsCount, errorlog);
   RecodeTests(&testsCount, &passTestsCount, errorlog);
   StrStrTests(&testsCount, &passTestsCount, errorlog);
-  ErrorsTests(&testsCount, &passTestsCount, errorlog);
+  ErrorsTests(&testsCount, &passTestsCount);
   printf("Total:\n");
   PrintRes(testsCount, passTestsCount);
   RemoveFromLog(errorlog);
