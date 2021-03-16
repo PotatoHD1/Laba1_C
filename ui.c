@@ -1,6 +1,11 @@
 //
 // Created by korna on 09.03.2021.
 //
+#include "void_string.c"
+#include "ascii_string.c"
+#include "unicode_string.c"
+#include "utf8_string.c"
+#include "tests.c"
 #include <stdio.h>
 #include <stdlib.h>
 const char *MSGS[] = {"0. Quit",
@@ -25,7 +30,7 @@ int Dialog(const char *msgs[], int n) {
       printf("%s\n", msgs[i]);
     }
     printf("Make your choice: \n");
-    scanf("%d",&choice);
+    scanf("%d", &choice);
   } while (choice < 0 || choice >= n);
   return choice;
 }
