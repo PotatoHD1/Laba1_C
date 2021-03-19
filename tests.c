@@ -53,17 +53,16 @@ void ConcatTests(float *testsCount, float *passTestsCount, char **errorlog) {
   utf8->SetLocale(errorlog);
   char input5[] = "Немного входного текста\n";
   char input6[] = "Ещё немного входного текста\n";
-  a = CreateFromCharArray(utf8, strlen(input5), input5, errorlog);
-  b = CreateFromCharArray(utf8, strlen(input6), input6, errorlog);
+  a = CreateFromCharArray(utf8, UTF8GetStrLen(input5, errorlog), input5,
+                          errorlog);
+  b = CreateFromCharArray(utf8, UTF8GetStrLen(input6, errorlog), input6,
+                          errorlog);
   c = Concat(a, b, errorlog);
   localTestsCount++;
-  char res3[] = "Н\0\0е\0\0м\0\0н\0\0о\0\0г\0\0о\0\0 "
-                "\0\0\0в\0\0х\0\0о\0\0д\0\0н\0\0о\0\0г\0\0о\0\0 "
-                "\0\0\0т\0\0е\0\0к\0\0с\0\0т\0\0а\0\0\n\0\0\0Е\0\0щ\0\0ё\0 "
-                "н\0\0е\0\0м\0\0н\0\0о\0\0г\0\0о\0\0 "
-                "\0\0\0в\0\0х\0\0о\0\0д\0\0н\0\0о\0\0г\0\0о\0\0 "
-                "\0\0\0т\0\0е\0\0к\0\0с\0\0т\0\0а\0\0\n\0\0\0";
-  if (strcmp((char *)c->data, res3) == 0) {
+  char res3[] = "Немного входного текста\nЕщё немного входного текста\n";
+  Delete(&b, errorlog);
+  b = CreateFromCharArray(utf8, UTF8GetStrLen(res3, errorlog), res3, errorlog);
+  if (StrIsEqual(b, c, errorlog)) {
     localPassTestsCount++;
     printf("Pass test %.0f\n", localTestsCount);
   } else

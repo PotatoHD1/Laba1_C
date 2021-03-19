@@ -13,9 +13,11 @@ const char *MSGS[] = {"0. Quit",
                       "2. Input UNICODE string",
                       "3. Input UTF-8 string",
                       "4. Print string",
-                      "5. Find b in a",
-                      "6. Run tests",
-                      "7. Clear error log"};
+                      "5. Concat a and b",
+                      "6. Find string b in string a",
+                      "7. Run tests",
+                      "8. Clear error log",
+                      "9. Delete strings"};
 const char *MSGS1[] = {"0. Quit", "1. String a", "2. String b"};
 const char *MSGS2[] = {"0. Quit", "1. With case", "2. Without case"};
 const int MSGS_SIZE = sizeof(MSGS) / sizeof(MSGS[0]);
@@ -80,24 +82,24 @@ void StartUI() {
     case 0:
       break;
     case 1:
-      char *text = get_str();
       res = Dialog(MSGS1, 3);
+      char *text = get_str();
       if (res == 1)
         a = CreateFromCharArray(ascii, strlen(text), text, errorlog);
       else if (res == 2)
         b = CreateFromCharArray(ascii, strlen(text), text, errorlog);
       break;
     case 2:
-      text = get_str();
       res = Dialog(MSGS1, 3);
+      text = get_str();
       if (res == 1)
         a = CreateFromCharArray(unicode, strlen(text), text, errorlog);
       else if (res == 2)
         b = CreateFromCharArray(unicode, strlen(text), text, errorlog);
       break;
     case 3:
-      text = get_str();
       res = Dialog(MSGS1, 3);
+      text = get_str();
       if (res == 1)
         a = CreateFromCharArray(utf8, UTF8GetStrLen(text, errorlog), text,
                                 errorlog);
@@ -113,14 +115,23 @@ void StartUI() {
         PrintStr(b, errorlog);
       break;
     case 5:
+      voidString *c = Concat(a, b, errorlog);
+      PrintStr(c, errorlog);
+      Delete(&c, errorlog);
+      break;
+    case 6:
       res = Dialog(MSGS2, 3);
       printf("%d\n", StrStr(a, b, res, errorlog));
       break;
-    case 6:
+    case 7:
       RunAllTests();
       break;
-    case 7:
+    case 8:
       *errorlog = calloc(1, 1);
+      break;
+    case 9:
+      Delete(&a, errorlog);
+      Delete(&b, errorlog);
       break;
     default:
       printf("How did you end up here?\n");
